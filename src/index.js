@@ -5,7 +5,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Avatar, Stack, TextField } from "@mui/material";
-import { DataGrid, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 const rows = [
   { id: 1, col1: "Hello", col2: "World" },
@@ -18,6 +18,7 @@ const profiles = [
     handle: "Anthalasath",
     imageUri:
       "https://pbs.twimg.com/profile_images/1297158984730902528/5cGwqw-I_400x400.png",
+    skills: ["C#", "Javascript", "Solidity"],
   },
 ];
 
@@ -25,22 +26,26 @@ async function getProfile(handle) {
   return profiles.find((p) => p.handle === handle);
 }
 
-class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      profile: props.profile,
-    };
-  }
+function Skills(props) {
+  const columns = [{ field: "skill", headerName: "Skill", width: 150 }];
+  const rows = props.skills.map((skill) => {
+    return { id: skill, skill };
+  });
+  return (
+    <div style={{ height: 300, width: "100%" }}>
+      <DataGrid rows={rows} columns={columns} />
+    </div>
+  );
+}
 
-  render() {
-    return (
-      <Stack spacing={2} alignItems="center">
-        <h1>{this.state.profile.handle}</h1>
-        <Avatar alt="avatar" src={this.state.profile.imageUri}></Avatar>
-      </Stack>
-    );
-  }
+function Profile(props) {
+  return (
+    <Stack spacing={2} alignItems="center">
+      <h1>{props.profile.handle}</h1>
+      <Avatar alt="avatar" src={props.profile.imageUri} sx={{height: 150, width: 150}}></Avatar>
+      <Skills skills={props.profile.skills}></Skills>
+    </Stack>
+  );
 }
 
 function ProfileSearchField(props) {
@@ -77,17 +82,17 @@ class App extends React.Component {
     );
     if (this.state.profile) {
       return (
-        <div>
+        <Stack spacing={2} alignItems="center">
           {searchField}
           <Profile profile={this.state.profile}></Profile>
-        </div>
+        </Stack>
       );
     } else {
       return (
-        <div>
+        <Stack spacing={2} alignItems="center">
           {searchField}
           <p>Profile "{this.state.searchQuery}" not found</p>
-        </div>
+        </Stack>
       );
     }
   }
