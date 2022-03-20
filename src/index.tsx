@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Avatar, Checkbox, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField } from "@mui/material";
+import { Avatar, Checkbox, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField } from "@mui/material";
 import { flatten } from "lodash"
 
 const cosCsharpDeveloperJob: Job = {
@@ -235,12 +235,16 @@ function AchievementView(props: { achievement: Achievement }): JSX.Element {
 }
 
 function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
-  return <Paper style={{ maxHeight: 600, maxWidth: 400, overflow: "auto" }}><List>
-    {props.achievements
-      .sort(achievement => achievement.dateOfDelivery.getTime())
-      .map(achievement => <AchievementView key={achievement.id} achievement={achievement}></AchievementView>)
-    }
-  </List>
+  return <Paper style={{ maxHeight: 600, maxWidth: 400, overflow: "auto" }}>
+    <List>
+      {props.achievements
+        .sort(achievement => achievement.dateOfDelivery.getTime())
+        .map(achievement => <>
+          <AchievementView key={achievement.id} achievement={achievement}></AchievementView>
+          <Divider />
+        </>)
+      }
+    </List>
   </Paper>
 }
 
@@ -293,7 +297,7 @@ class App extends React.Component<{}, AppState> {
     );
 
     if (this.state.profile) {
-      return <Grid container spacing={2}>
+      return <Grid container spacing={0}>
         {searchField}
         <Grid item xs={6}>
           <ProfileView
@@ -303,7 +307,7 @@ class App extends React.Component<{}, AppState> {
           ></ProfileView>
         </Grid>
         <Grid item xs={6}>
-        <h2>Latest achievements</h2>
+          <h2>Latest achievements</h2>
           <AchievementList
             achievements={getLatestAchievements(
               this.state.profile,
