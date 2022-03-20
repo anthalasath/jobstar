@@ -1,5 +1,4 @@
 # TODO:
-- Use Typescript
 - Basic profile layout
 - Search by handle
 - Search by skills

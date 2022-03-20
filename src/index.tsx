@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Avatar, Stack, TextField } from "@mui/material";
+import { Avatar, List, ListItem, ListItemButton, ListItemText, Stack, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 const profiles: Profile[] = [
@@ -36,21 +36,18 @@ async function getProfile(handle): Promise<Profile> {
 }
 
 function Skills(props: { skills: Skill[] }) {
-  const columns = [
-    { field: "skill", headerName: "Skill", width: 150 },
-    { field: "achievements", headerName: "Achievements", width: 150 }
-  ];
-  const rows = props.skills.map((skill) => {
-    return { id: skill.name, skill: skill.name, achievements: skill.achievementsCount };
-  });
-  return (
-    <div style={{ height: 300, width: "100%" }}>
-      <DataGrid rows={rows} columns={columns} />
-    </div>
-  );
+  return <List>
+    {props.skills.map(skill => <SkillListItemView key={skill.name} skill={skill}></SkillListItemView>)}
+  </List>
 }
 
-
+function SkillListItemView(props: { skill: Skill }) {
+  return <ListItem>
+    <ListItemButton>
+      <ListItemText primary={`${props.skill.name} (${props.skill.achievementsCount})`}></ListItemText>
+    </ListItemButton>
+  </ListItem>
+}
 
 function ProfileView(props) {
   return (
