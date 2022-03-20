@@ -222,7 +222,7 @@ function ProfileSearchField(props: { handleChange: (value: any) => void }) {
 
 
 function formatDate(date: Date): string {
-  return Intl.DateTimeFormat(navigator.language, { weekday: 'long', month: 'short', day: 'numeric' }).format(date);
+  return Intl.DateTimeFormat(navigator.language, { weekday: 'long', month: 'short', day: 'numeric', year: "numeric" }).format(date);
 }
 
 function formatAchievement(achievement: Achievement): string {
@@ -238,7 +238,7 @@ function AchievementView(props: { achievement: Achievement }): JSX.Element {
 function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
   return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
     {props.achievements
-      .sort(achievement => 0 - achievement.dateOfDelivery.getTime())
+      .sort(achievement => achievement.dateOfDelivery.getTime())
       .map(achievement => <AchievementView key={achievement.id} achievement={achievement}></AchievementView>)
     }
   </List>
