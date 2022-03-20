@@ -7,29 +7,41 @@ import "@fontsource/roboto/700.css";
 import { Avatar, Stack, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-const rows = [
-  { id: 1, col1: "Hello", col2: "World" },
-  { id: 2, col1: "DataGridPro", col2: "is Awesome" },
-  { id: 3, col1: "MUI", col2: "is Amazing" },
-];
-
-const profiles = [
+const profiles: Profile[] = [
   {
     handle: "Anthalasath",
     imageUri:
       "https://pbs.twimg.com/profile_images/1297158984730902528/5cGwqw-I_400x400.png",
-    skills: ["C#", "Javascript", "Solidity"],
+    skills: [
+      { name: "C#", achievementsCount: 34 },
+      { name: "Javascript", achievementsCount: 12 },
+      { name: "Solidity", achievementsCount: 10 }
+    ]
   },
 ];
 
-async function getProfile(handle) {
+interface Skill {
+  name: string,
+  achievementsCount: number
+}
+
+interface Profile {
+  handle: string,
+  imageUri: string,
+  skills: Skill[]
+}
+
+async function getProfile(handle): Promise<Profile> {
   return profiles.find((p) => p.handle === handle);
 }
 
-function Skills(props) {
-  const columns = [{ field: "skill", headerName: "Skill", width: 150 }];
+function Skills(props: { skills: Skill[] }) {
+  const columns = [
+    { field: "skill", headerName: "Skill", width: 150 },
+    { field: "achievements", headerName: "Achievements", width: 150 }
+  ];
   const rows = props.skills.map((skill) => {
-    return { id: skill, skill };
+    return { id: skill.name, skill: skill.name, achievements: skill.achievementsCount };
   });
   return (
     <div style={{ height: 300, width: "100%" }}>
@@ -38,28 +50,30 @@ function Skills(props) {
   );
 }
 
-function Profile(props) {
+
+
+function ProfileView(props) {
   return (
     <Stack spacing={2} alignItems="center">
       <h1>{props.profile.handle}</h1>
-      <Avatar alt="avatar" src={props.profile.imageUri} sx={{height: 150, width: 150}}></Avatar>
+      <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 150, width: 150 }}></Avatar>
       <Skills skills={props.profile.skills}></Skills>
     </Stack>
   );
 }
 
-function ProfileSearchField(props) {
+function ProfileSearchField(props: { handleChange: (value: any) => void }) {
   return (
     <TextField
       id="outlined-basic"
       label="Search by handle"
       variant="outlined"
       onChange={(value) => props.handleChange(value)}
-      onSubmit={props.handleSubmit}
     />
   );
 }
-class App extends React.Component {
+
+class App extends React.Component<{}, { profile: Profile, searchQuery: string }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +82,7 @@ class App extends React.Component {
     };
   }
 
-  async handleChange(searchQuery) {
+  async handleChange(searchQuery: string) {
     const profile = await getProfile(searchQuery);
     this.setState({ profile: profile, searchQuery });
   }
@@ -77,14 +91,13 @@ class App extends React.Component {
     const searchField = (
       <ProfileSearchField
         handleChange={(e) => this.handleChange(e.target.value)}
-        handleSubmit={this.handleSubmit}
       ></ProfileSearchField>
     );
     if (this.state.profile) {
       return (
         <Stack spacing={2} alignItems="center">
           {searchField}
-          <Profile profile={this.state.profile}></Profile>
+          <ProfileView profile={this.state.profile}></ProfileView>
         </Stack>
       );
     } else {
