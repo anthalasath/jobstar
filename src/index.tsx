@@ -160,7 +160,6 @@ function getLatestAchievements(profile: Profile, skills: Set<string> | null): Ac
     profile.skills
       .filter(skill => skills === null || skills.has(skill.name))
       .map(skill => skill.achievements));
-  console.log(JSON.stringify(achievements, null, 1));
   return achievements.sort(a => a.dateOfDelivery.getTime());
 }
 
@@ -202,7 +201,7 @@ function SkillListItemView(props: { skill: Skill, isChecked: boolean, handleClic
 function ProfileView(props: { profile: Profile, selectedSkills: Set<string>, handleSkillClick: (skill: string) => void }) {
   return (
     <Stack spacing={2} alignItems="center">
-      <h1>{props.profile.handle}</h1>
+      <h2>{props.profile.handle}</h2>
       <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 150, width: 150 }}></Avatar>
       <SkillList skills={props.profile.skills} selectedSkills={props.selectedSkills} handleClick={props.handleSkillClick}></SkillList>
     </Stack>
@@ -304,6 +303,7 @@ class App extends React.Component<{}, AppState> {
           ></ProfileView>
         </Grid>
         <Grid item xs={6}>
+        <h2>Latest achievements</h2>
           <AchievementList
             achievements={getLatestAchievements(
               this.state.profile,
