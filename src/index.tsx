@@ -4,8 +4,9 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Avatar, Checkbox, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField } from "@mui/material";
+import { Avatar, Checkbox, Divider, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField } from "@mui/material";
 import { flatten } from "lodash"
+import placeholderAvatar from "./placeholder-avatar.png";
 
 const cosCsharpDeveloperJob: Job = {
   title: "C# Programmer",
@@ -14,8 +15,11 @@ const cosCsharpDeveloperJob: Job = {
 
 const cosProject: Project = {
   name: "Clash Of Streamers",
-  teamDisplayName: "The Singularity Group"
+  teamDisplayName: "The Singularity Group",
+  imageUri: "https://play-lh.googleusercontent.com/7WBLXw6FGMFqwmCaqU1KXLDl73oFJ6iVlQ5Dl_Wq3Mlfv95eCDwdS7kdB-5TDUuojVo=s360"
 }
+
+const dubiexIconUri = "https://scontent.fcrl1-1.fna.fbcdn.net/v/t1.6435-9/35646161_258309928247424_9059279955157843968_n.png?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vNDV-B1TKuAAX-BaGkt&_nc_ht=scontent.fcrl1-1.fna&oh=00_AT_P6SmRMtZJM3jqpSl7GrlyH0MYSk-i3srHYfruDohgzQ&oe=625C16E4";
 
 interface MockAchievementInput {
   skill: string,
@@ -46,11 +50,8 @@ class MockAchievementFactory {
         title: "Automation developer",
         description: "Develop automated internal tools"
       },
-      project: {
-        name: "DUBIex bot",
-        teamDisplayName: "The Singularity Group"
-      },
-      dateOfDelivery: new Date(Date.parse("31 June 2018"))
+      project,
+      dateOfDelivery
     });
   }
 
@@ -90,14 +91,16 @@ const profiles: Profile[] = [
           MockAchievementFactory.createAutomation("Developed the DUBIex trading bot",
             {
               name: "DUBIex bot",
-              teamDisplayName: "The Singularity Group"
+              teamDisplayName: "The Singularity Group",
+              imageUri: dubiexIconUri
             },
             new Date(Date.parse("31 June 2018"))
           ),
           MockAchievementFactory.createAutomation("Developed a fraudulent transaction detection system",
             {
               name: "Gaming For Good",
-              teamDisplayName: "The Singularity Group"
+              teamDisplayName: "The Singularity Group",
+              imageUri: null
             },
             new Date(Date.parse("31 June 2018"))
           )
@@ -109,7 +112,8 @@ const profiles: Profile[] = [
             skill: "Solidity",
             project: {
               name: "DUBIex",
-              teamDisplayName: "The Singularity Group"
+              teamDisplayName: "The Singularity Group",
+              imageUri: dubiexIconUri
             },
             description: "Audited smart contracts",
             dateOfDelivery: new Date(Date.parse("31 May 2018")),
@@ -126,7 +130,8 @@ const profiles: Profile[] = [
 ];
 interface Project {
   name: string,
-  teamDisplayName: string
+  teamDisplayName: string,
+  imageUri: string
 }
 
 interface Job {
@@ -225,11 +230,14 @@ function formatDate(date: Date): string {
 }
 
 function formatAchievement(achievement: Achievement): string {
-  return `${achievement.description}. Project: ${achievement.project.name}. Team: ${achievement.project.teamDisplayName}. Delievered: ${formatDate(achievement.dateOfDelivery)}`;
+  return `${achievement.description}. Project: ${achievement.project.name}. Team: ${achievement.project.teamDisplayName}. Delivered: ${formatDate(achievement.dateOfDelivery)}`;
 }
 
 function AchievementView(props: { achievement: Achievement }): JSX.Element {
   return <ListItem>
+    <ListItemAvatar>
+      <Avatar alt="avatar" src={props.achievement.project.imageUri ? props.achievement.project.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
+    </ListItemAvatar>
     <ListItemText primary={formatAchievement(props.achievement)}></ListItemText>
   </ListItem>
 }
