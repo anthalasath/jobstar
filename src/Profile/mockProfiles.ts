@@ -17,7 +17,6 @@ export const mockProfiles: Profile[] = [
                     MockAchievementFactory.createCoS("Developed the Hyperlinks feature and API"),
                     MockAchievementFactory.createCoS("Developed the support ticket feature and API"),
                     MockAchievementFactory.createCoS("Developed the HotStories posts API"),
-                    MockAchievementFactory.createCoS("Optimized code across the HotStories feature"),
                     MockAchievementFactory.createCoS("Optimized code across the Hyperlinks feature")
                 ]
             },
