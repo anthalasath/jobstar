@@ -235,7 +235,7 @@ function AchievementView(props: { achievement: Achievement }): JSX.Element {
 }
 
 function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
-  return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
+  return <Paper style={{ maxHeight: 600, maxWidth: 400, overflow: "auto" }}><List>
     {props.achievements
       .sort(achievement => achievement.dateOfDelivery.getTime())
       .map(achievement => <AchievementView key={achievement.id} achievement={achievement}></AchievementView>)
