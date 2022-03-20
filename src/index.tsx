@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Avatar, List, ListItem, ListItemButton, ListItemText, Stack, TextField } from "@mui/material";
+import { Avatar, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Stack, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 const profiles: Profile[] = [
@@ -14,7 +14,12 @@ const profiles: Profile[] = [
       "https://pbs.twimg.com/profile_images/1297158984730902528/5cGwqw-I_400x400.png",
     skills: [
       { name: "C#", achievementsCount: 34 },
-      { name: "Javascript", achievementsCount: 12 },
+      { name: "NodeJS", achievementsCount: 12 },
+      { name: "Python", achievementsCount: 7 },
+      { name: "Unity", achievementsCount: 35 },
+      { name: "CSS", achievementsCount: 6 },
+      { name: "React", achievementsCount: 10 },
+      { name: "Git", achievementsCount: 10 },
       { name: "Solidity", achievementsCount: 10 }
     ]
   },
@@ -36,9 +41,13 @@ async function getProfile(handle): Promise<Profile> {
 }
 
 function Skills(props: { skills: Skill[] }) {
-  return <List>
-    {props.skills.map(skill => <SkillListItemView key={skill.name} skill={skill}></SkillListItemView>)}
+  return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
+    {props.skills
+      .sort(skill => 0 - skill.achievementsCount)
+      .map(skill => <SkillListItemView key={skill.name} skill={skill}></SkillListItemView>)
+    }
   </List>
+  </Paper>
 }
 
 function SkillListItemView(props: { skill: Skill }) {
@@ -86,24 +95,40 @@ class App extends React.Component<{}, { profile: Profile, searchQuery: string }>
 
   render() {
     const searchField = (
-      <ProfileSearchField
-        handleChange={(e) => this.handleChange(e.target.value)}
-      ></ProfileSearchField>
+      <>
+        <Grid item xs={4}>
+        </Grid>
+        <Grid item xs={4}>
+          <ProfileSearchField
+            handleChange={(e) => this.handleChange(e.target.value)}
+          ></ProfileSearchField>
+        </Grid>
+        <Grid item xs={4}>
+        </Grid>
+      </>
     );
+
     if (this.state.profile) {
-      return (
-        <Stack spacing={2} alignItems="center">
-          {searchField}
+      return <Grid container spacing={2}>
+        {searchField}
+        <Grid item xs={6}>
           <ProfileView profile={this.state.profile}></ProfileView>
-        </Stack>
-      );
+        </Grid>
+        <Grid item xs={6}>
+          <ProfileView profile={this.state.profile}></ProfileView>
+        </Grid>
+      </Grid>
     } else {
-      return (
-        <Stack spacing={2} alignItems="center">
-          {searchField}
+      return <Grid container spacing={2}>
+        {searchField}
+        <Grid item xs={4}>
+        </Grid>
+        <Grid item xs={4}>
           <p>Profile "{this.state.searchQuery}" not found</p>
-        </Stack>
-      );
+        </Grid>
+        <Grid item xs={4}>
+        </Grid>
+      </Grid>
     }
   }
 }
