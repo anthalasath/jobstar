@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Avatar, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Stack, TextField } from "@mui/material";
+import { Avatar, Checkbox, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField } from "@mui/material";
 import { flatten } from "lodash"
 
 const cosCsharpDeveloperJob: Job = {
@@ -155,8 +155,12 @@ interface Profile {
   skills: Skill[]
 }
 
-function getLatestAchievements(profile: Profile): Achievement[] {
-  const achievements: Achievement[] = flatten(Object.keys(profile.skills).map(k => profile.skills[k].achievements));
+function getLatestAchievements(profile: Profile, skills: Set<string> | null): Achievement[] {
+  const achievements: Achievement[] = flatten(
+    profile.skills
+      .filter(skill => skills === null || skills.has(skill.name))
+      .map(skill => skill.achievements));
+  console.log(JSON.stringify(achievements, null, 1));
   return achievements.sort(a => a.dateOfDelivery.getTime());
 }
 
@@ -164,30 +168,43 @@ async function getProfile(handle: string): Promise<Profile> {
   return profiles.find((p) => p.handle === handle);
 }
 
-function SkillList(props: { skills: Skill[], handleClick: (skill: string) => void }) {
+function SkillList(props: { skills: Skill[], selectedSkills: Set<string>, handleClick: (skill: string) => void }) {
   return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
     {props.skills
       .sort(skill => 0 - skill.achievements.length)
-      .map(skill => <SkillListItemView key={skill.name} skill={skill} handleClick={props.handleClick}></SkillListItemView>)
+      .map(skill => <SkillListItemView
+        key={skill.name}
+        isChecked={props.selectedSkills.has(skill.name)}
+        skill={skill}
+        handleClick={props.handleClick}></SkillListItemView>)
     }
   </List>
   </Paper>
 }
 
-function SkillListItemView(props: { skill: Skill, handleClick: (skill: string) => void }) {
+function SkillListItemView(props: { skill: Skill, isChecked: boolean, handleClick: (skill: string) => void }) {
   return <ListItem>
     <ListItemButton onClick={() => props.handleClick(props.skill.name)}>
+      <ListItemIcon>
+        <Checkbox
+          edge="start"
+          checked={props.isChecked}
+          tabIndex={-1}
+          disableRipple
+          inputProps={{ 'aria-labelledby': props.skill.name }}
+        />
+      </ListItemIcon>
       <ListItemText primary={`${props.skill.name} (${props.skill.achievements.length})`}></ListItemText>
     </ListItemButton>
   </ListItem>
 }
 
-function ProfileView(props: { profile: Profile, handleSkillClick: (skill: string) => void }) {
+function ProfileView(props: { profile: Profile, selectedSkills: Set<string>, handleSkillClick: (skill: string) => void }) {
   return (
     <Stack spacing={2} alignItems="center">
       <h1>{props.profile.handle}</h1>
       <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 150, width: 150 }}></Avatar>
-      <SkillList skills={props.profile.skills} handleClick={props.handleSkillClick}></SkillList>
+      <SkillList skills={props.profile.skills} selectedSkills={props.selectedSkills} handleClick={props.handleSkillClick}></SkillList>
     </Stack>
   );
 }
@@ -231,7 +248,7 @@ function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
 interface AppState {
   profile: Profile,
   searchQuery: string,
-  skillFilter: string
+  selectedSkills: Set<string>
 }
 
 class App extends React.Component<{}, AppState> {
@@ -240,7 +257,7 @@ class App extends React.Component<{}, AppState> {
     this.state = {
       profile: null,
       searchQuery: null,
-      skillFilter: null
+      selectedSkills: new Set<string>()
     };
   }
 
@@ -250,7 +267,15 @@ class App extends React.Component<{}, AppState> {
   }
 
   handleSkillClick(skill: string) {
-    this.setState({ skillFilter: skill });
+    const selectedSkills = this.state.selectedSkills;
+    let newSelectedSkills: Set<string>;
+    if (selectedSkills.has(skill)) {
+      selectedSkills.delete(skill);
+      newSelectedSkills = selectedSkills;
+    } else {
+      newSelectedSkills = selectedSkills.add(skill);
+    }
+    this.setState({ selectedSkills: newSelectedSkills });
   }
 
   render() {
@@ -272,12 +297,19 @@ class App extends React.Component<{}, AppState> {
       return <Grid container spacing={2}>
         {searchField}
         <Grid item xs={6}>
-          <ProfileView profile={this.state.profile} handleSkillClick={skill => this.handleSkillClick(skill)}></ProfileView>
+          <ProfileView
+            profile={this.state.profile}
+            selectedSkills={this.state.selectedSkills}
+            handleSkillClick={skill => this.handleSkillClick(skill)}
+          ></ProfileView>
         </Grid>
         <Grid item xs={6}>
-          <AchievementList achievements={this.state.skillFilter ?
-            this.state.profile.skills.find(skill => skill.name === this.state.skillFilter).achievements :
-            getLatestAchievements(this.state.profile)}></AchievementList>
+          <AchievementList
+            achievements={getLatestAchievements(
+              this.state.profile,
+              this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null
+            )}>
+          </AchievementList>
         </Grid>
       </Grid>
     } else {
