@@ -6,7 +6,9 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Grid, TextField } from "@mui/material";
 import { getProfile, Profile, ProfileView } from "./Profile/profile";
-import { AchievementList, getLatestAchievements } from "./Achievements/achievements";
+import { Achievement, AchievementList, getLatestAchievements, getLatestAchievementsAll } from "./Achievements/achievements";
+import { JobStarHeader } from "./Header/header";
+import { Box } from "@mui/system";
 
 function ProfileSearchField(props: { handleChange: (value: any) => void }) {
   return (
@@ -20,85 +22,26 @@ function ProfileSearchField(props: { handleChange: (value: any) => void }) {
 }
 
 interface AppState {
-  profile: Profile,
-  searchQuery: string,
-  selectedSkills: Set<string>
+  achievements: Achievement[]
 }
 
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
-      profile: null,
-      searchQuery: null,
-      selectedSkills: new Set<string>()
+      achievements: []
     };
   }
 
-  async handleChange(searchQuery: string) {
-    const profile = await getProfile(searchQuery);
-    this.setState({ profile: profile, searchQuery });
-  }
-
-  handleSkillClick(skill: string) {
-    const selectedSkills = this.state.selectedSkills;
-    let newSelectedSkills: Set<string>;
-    if (selectedSkills.has(skill)) {
-      selectedSkills.delete(skill);
-      newSelectedSkills = selectedSkills;
-    } else {
-      newSelectedSkills = selectedSkills.add(skill);
-    }
-    this.setState({ selectedSkills: newSelectedSkills });
+  async componentDidMount(): Promise<void> {
+    this.setState({ achievements: await getLatestAchievementsAll() });
   }
 
   render() {
-    const searchField = (
-      <>
-        <Grid item xs={4}>
-        </Grid>
-        <Grid item xs={4}>
-          <ProfileSearchField
-            handleChange={(e) => this.handleChange(e.target.value)}
-          ></ProfileSearchField>
-        </Grid>
-        <Grid item xs={4}>
-        </Grid>
-      </>
-    );
-
-    if (this.state.profile) {
-      return <Grid container spacing={0}>
-        {searchField}
-        <Grid item xs={6}>
-          <ProfileView
-            profile={this.state.profile}
-            selectedSkills={this.state.selectedSkills}
-            handleSkillClick={skill => this.handleSkillClick(skill)}
-          ></ProfileView>
-        </Grid>
-        <Grid item xs={6}>
-          <h2>Latest achievements</h2>
-          <AchievementList
-            achievements={getLatestAchievements(
-              this.state.profile,
-              this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null
-            )}>
-          </AchievementList>
-        </Grid>
-      </Grid>
-    } else {
-      return <Grid container spacing={2}>
-        {searchField}
-        <Grid item xs={4}>
-        </Grid>
-        <Grid item xs={4}>
-          <p>Profile "{this.state.searchQuery}" not found</p>
-        </Grid>
-        <Grid item xs={4}>
-        </Grid>
-      </Grid>
-    }
+    return <Box>
+      <JobStarHeader></JobStarHeader>
+      <AchievementList achievements={this.state.achievements}></AchievementList>
+    </Box>
   }
 }
 

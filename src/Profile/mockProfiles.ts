@@ -61,4 +61,32 @@ export const mockProfiles: Profile[] = [
             { name: "Git", achievements: [] },
         ]
     },
+    {
+        id: "1",
+        handle: "Doge the Doge",
+        imageUri:
+            "https://avatarfiles.alphacoders.com/165/thumb-165625.jpg",
+        skills: [
+            {
+                name: "wow",
+                achievements: [
+                    MockAchievementFactory.create({
+                        skill: "wow",
+                        job: {
+                            title: "best title",
+                            description: "being the best"
+                        },
+                        project: {
+                            teamDisplayName: "the doges",
+                            name: "wow factory",
+                            imageUri: "https://static.wikia.nocookie.net/d17a9654-4ee8-44cf-baf1-98d7eaa96ed8/scale-to-width/755"
+                        },
+                        description: "was so good u wont believe it",
+                        dateOfDelivery: new Date(Date.parse("31 February 2022"))
+                    })
+                ]
+            },
+            { name: "Marketing", achievements: [] },
+        ]
+    },
 ];

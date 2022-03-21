@@ -4,6 +4,7 @@ import { Profile } from "../Profile/profile";
 import { formatDate } from "../utils";
 import { Job, Project } from "../Skills/skills";
 import * as React from "react";
+import { mockProfiles } from "../Profile/mockProfiles";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -16,6 +17,10 @@ export interface Achievement {
     id: string
 }
 
+export async function getLatestAchievementsAll(): Promise<Achievement[]> {
+    return flatten(mockProfiles.map(p => getLatestAchievements(p, null)));
+}
+
 export function getLatestAchievements(profile: Profile, skills: Set<string> | null): Achievement[] {
     const achievements: Achievement[] = flatten(
         profile.skills
@@ -23,7 +28,6 @@ export function getLatestAchievements(profile: Profile, skills: Set<string> | nu
             .map(skill => skill.achievements));
     return achievements.sort(a => a.dateOfDelivery.getTime());
 }
-
 
 function formatAchievement(achievement: Achievement): string {
     return `${achievement.description}. Project: ${achievement.project.name}. Team: ${achievement.project.teamDisplayName}. Delivered: ${formatDate(achievement.dateOfDelivery)}`;
