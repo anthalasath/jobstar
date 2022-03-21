@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { ProfileSearchField } from "../ProfileSearchField/profileSearchField";
 import { Achievement, LatestAchievementsView } from "../Achievements/achievements";
 import { JobStarHeader } from "../Header/header";
-import { SkillList } from "../Skills/skills";
+import { SkillList, toggleSkill } from "../Skills/skills";
 import { Profile } from "../Profile/profile";
 import { mockProfiles } from "../Profile/mockProfiles";
 import * as React from "react";
@@ -34,16 +34,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     handleSkillClick(skill: string): void {
-        const selectedSkills = this.state.selectedSkills;
-        let newSelectedSkills: Set<string>;
-        if (selectedSkills.has(skill)) {
-            selectedSkills.delete(skill);
-            newSelectedSkills = selectedSkills;
-        } else {
-            newSelectedSkills = selectedSkills.add(skill);
-        }
         this.setState({
-            selectedSkills: newSelectedSkills,
+            selectedSkills: toggleSkill(skill, this.state.selectedSkills),
         });
     }
 

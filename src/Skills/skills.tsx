@@ -22,8 +22,13 @@ export interface Skill {
     achievements: Achievement[] // TODO: make it so that skills dont know about achievements, only achievmeents about skill architecture-wise
 }
 
+export interface SkillListProps {
+    skills: Skill[],
+    selectedSkills: Set<string>,
+    handleClick: (skill: string) => void
+}
 
-export function SkillList(props: { skills: Skill[], selectedSkills: Set<string>, handleClick: (skill: string) => void }) {
+export function SkillList(props: SkillListProps) {
     return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
         {props.skills
             .sort(skill => 0 - skill.achievements.length)
@@ -56,4 +61,15 @@ function SkillListItemView(props: { skill: Skill, isChecked: boolean, handleClic
 
 export async function getProfilesWithSkill(skill: string): Promise<Profile[]> {
     return mockProfiles.filter(p => p.skills.some(s => s.name === skill));
+}
+
+export function toggleSkill(skill: string, selectedSkills: Set<string>): Set<string> {
+    let newSelectedSkills: Set<string>;
+    if (selectedSkills.has(skill)) {
+        selectedSkills.delete(skill);
+        newSelectedSkills = selectedSkills;
+    } else {
+        newSelectedSkills = selectedSkills.add(skill);
+    }
+    return newSelectedSkills;
 }

@@ -9,6 +9,7 @@ import { Home } from "./Home/home";
 import { Box } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
+import { ProfilePage } from "./Profile/profile";
 
 interface AppState {
   achievements: Achievement[]
@@ -35,11 +36,12 @@ class App extends React.Component<{}, AppState> {
   render() {
     return <Box>
       <JobStarHeader></JobStarHeader>
-      <Home
+      <ProfilePage profile={mockProfiles[0]}></ProfilePage>
+      {/* <Home
         skills={["Javascript", "Solidity", "Marketing", "C#"]}
         workerProfiles={mockProfiles}
         achievements={this.state.achievements}
-        handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home>
+        handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home> */}
     </Box>
   }
 }
