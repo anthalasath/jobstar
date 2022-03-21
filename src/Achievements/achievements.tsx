@@ -47,7 +47,7 @@ function AchievementView(props: { achievement: Achievement }): JSX.Element {
 }
 
 export function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
-    return <Paper style={{ maxHeight: 200, maxWidth: 400, overflow: "auto" }}>
+    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
         <List>
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())
