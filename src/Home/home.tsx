@@ -118,18 +118,18 @@ function WorkerProfiles(props: WorkerProfilesProps) {
         </Grid>
         {props.profiles.map(p => {
             return <Grid item xs={6}>
-                <ProfileSummary profile={p} handleClick={() => props.handleClick(p)}></ProfileSummary>
+                <ProfileHandle profile={p} handleClick={() => props.handleClick(p)}></ProfileHandle>
             </Grid>
         })}
     </Grid>
 }
 
-interface ProfileSummaryProps {
+interface ProfileHandleViewProps {
     profile: Profile
     handleClick: () => void
 }
 
 
-function ProfileSummary(props: ProfileSummaryProps) {
+function ProfileHandle(props: ProfileHandleViewProps) {
     return <Button variant="outlined" onClick={() => props.handleClick}>{props.profile.handle}</Button>
 }
