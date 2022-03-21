@@ -22,7 +22,6 @@ export interface HomeProps {
 }
 
 interface HomeState {
-    workerProfiles: Profile[]
     selectedSkills: Set<string>
 }
 
@@ -30,7 +29,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
     constructor(props: HomeProps) {
         super(props);
         this.state = {
-            workerProfiles: props.workerProfiles,
             selectedSkills: new Set<string>()
         };
     }
@@ -44,11 +42,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
         } else {
             newSelectedSkills = selectedSkills.add(skill);
         }
-        const workersWithSelectedSkills = this.state.workerProfiles
-            .filter(p => p.skills.some(s => newSelectedSkills.has(s.name)));
         this.setState({
             selectedSkills: newSelectedSkills,
-            workerProfiles: workersWithSelectedSkills
         });
     }
 
@@ -62,7 +57,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
                     <LatestAchievementsView achievements={this.props.achievements}></LatestAchievementsView>
                 </Grid>
                 <Grid item xs={6}>
-                    <WorkerProfiles profiles={this.state.workerProfiles} handleClick={(p) => console.log(p.handle)}></WorkerProfiles>
+                    <WorkerProfiles profiles={this.props.workerProfiles
+                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}
+                        handleClick={(p) => console.log(p.handle)}></WorkerProfiles>
                 </Grid>
                 <Grid item xs={6}>
                     <HomeSkillList

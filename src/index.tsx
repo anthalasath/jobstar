@@ -32,8 +32,6 @@ class App extends React.Component<{}, AppState> {
     this.setState({ profileSearchQuery: value });
   }
 
-
-
   render() {
     return <Box>
       <JobStarHeader></JobStarHeader>
