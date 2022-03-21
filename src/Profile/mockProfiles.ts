@@ -21,7 +21,7 @@ export const mockProfiles: Profile[] = [
                 ]
             },
             {
-                name: "NodeJS", achievements: [
+                name: "Javascript", achievements: [
                     MockAchievementFactory.createAutomation("Developed the DUBIex trading bot",
                         {
                             name: "DUBIex bot",
@@ -62,7 +62,7 @@ export const mockProfiles: Profile[] = [
         ]
     },
     {
-        id: "1",
+        id: "2",
         handle: "Doge the Doge",
         imageUri:
             "https://avatarfiles.alphacoders.com/165/thumb-165625.jpg",
@@ -87,6 +87,33 @@ export const mockProfiles: Profile[] = [
                 ]
             },
             { name: "Marketing", achievements: [] },
+        ]
+    },
+    {
+        id: "3",
+        handle: "John Smith",
+        imageUri:
+            "https://images.pexels.com/photos/937481/pexels-photo-937481.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        skills: [
+            {
+                name: "Solidity",
+                achievements: [
+                    MockAchievementFactory.create({
+                        skill: "Solidity",
+                        job: {
+                            title: "Solidity programmer",
+                            description: "Writing smart contracts"
+                        },
+                        project: {
+                            teamDisplayName: "Solo",
+                            name: "some ethereum stuff",
+                            imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Ethereum_logo_translucent.svg/800px-Ethereum_logo_translucent.svg.png"
+                        },
+                        description: "excellent security skills",
+                        dateOfDelivery: new Date(Date.parse("17 February 2022"))
+                    })
+                ]
+            }
         ]
     },
 ];

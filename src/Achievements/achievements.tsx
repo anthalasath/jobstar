@@ -17,8 +17,10 @@ export interface Achievement {
     id: string
 }
 
-export async function getLatestAchievementsAll(): Promise<Achievement[]> {
-    return flatten(mockProfiles.map(p => getLatestAchievements(p, null)));
+export async function getLatestAchievementsAll(skills: Set<string> | null): Promise<Achievement[]> {
+    return flatten(mockProfiles
+        .map(p => getLatestAchievements(p, skills)))
+        ;
 }
 
 export function getLatestAchievements(profile: Profile, skills: Set<string> | null): Achievement[] {
@@ -28,6 +30,7 @@ export function getLatestAchievements(profile: Profile, skills: Set<string> | nu
             .map(skill => skill.achievements));
     return achievements.sort(a => a.dateOfDelivery.getTime());
 }
+
 
 function formatAchievement(achievement: Achievement): string {
     return `${achievement.job.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;

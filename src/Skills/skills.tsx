@@ -1,6 +1,8 @@
 import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper } from "@mui/material"
 import { Achievement } from "../Achievements/achievements"
 import * as React from "react";
+import { mockProfiles } from "../Profile/mockProfiles";
+import { Profile } from "../Profile/profile";
 
 
 export interface Project {
@@ -50,4 +52,8 @@ function SkillListItemView(props: { skill: Skill, isChecked: boolean, handleClic
             <ListItemText primary={`${props.skill.name} (${props.skill.achievements.length})`}></ListItemText>
         </ListItemButton>
     </ListItem>
+}
+
+export async function getProfilesWithSkill(skill: string): Promise<Profile[]> {
+    return mockProfiles.filter(p => p.skills.some(s => s.name === skill));
 }
