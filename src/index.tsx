@@ -4,32 +4,20 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Grid, TextField } from "@mui/material";
-import { getProfile, Profile, ProfileView } from "./Profile/profile";
-import { Achievement, AchievementList, getLatestAchievements, getLatestAchievementsAll } from "./Achievements/achievements";
-import { JobStarHeader } from "./Header/header";
-import { Box } from "@mui/system";
-
-function ProfileSearchField(props: { handleChange: (value: any) => void }) {
-  return (
-    <TextField
-      id="outlined-basic"
-      label="Search by handle"
-      variant="outlined"
-      onChange={(value) => props.handleChange(value)}
-    />
-  );
-}
+import { Achievement, getLatestAchievementsAll } from "./Achievements/achievements";
+import { Home } from "./Home/home";
 
 interface AppState {
   achievements: Achievement[]
+  profileSearchQuery: string
 }
 
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
-      achievements: []
+      achievements: [],
+      profileSearchQuery: ""
     };
   }
 
@@ -37,11 +25,14 @@ class App extends React.Component<{}, AppState> {
     this.setState({ achievements: await getLatestAchievementsAll() });
   }
 
+  handleProfileSearchFieldChange(value: any) {
+    this.setState({ profileSearchQuery: value });
+  }
+
   render() {
-    return <Box>
-      <JobStarHeader></JobStarHeader>
-      <AchievementList achievements={this.state.achievements}></AchievementList>
-    </Box>
+    return <Home
+      achievements={this.state.achievements}
+      handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home>
   }
 }
 

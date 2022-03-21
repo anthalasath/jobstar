@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper } from "@mui/material"
+import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
 import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
 import { formatDate } from "../utils";
@@ -30,7 +30,7 @@ export function getLatestAchievements(profile: Profile, skills: Set<string> | nu
 }
 
 function formatAchievement(achievement: Achievement): string {
-    return `${achievement.description}. Project: ${achievement.project.name}. Team: ${achievement.project.teamDisplayName}. Delivered: ${formatDate(achievement.dateOfDelivery)}`;
+    return `${achievement.job.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;
 }
 
 
@@ -57,4 +57,9 @@ export function AchievementList(props: { achievements: Achievement[] }): JSX.Ele
     </Paper>
 }
 
-
+export function LatestAchievementsView(props: { achievements: Achievement[] }): JSX.Element {
+    return <Stack>
+        <h2>Latest achievements</h2>
+        <AchievementList achievements={props.achievements}></AchievementList>
+    </Stack>
+}
