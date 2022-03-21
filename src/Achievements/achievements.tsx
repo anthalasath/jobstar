@@ -38,7 +38,7 @@ function formatAchievement(achievement: Achievement): string {
 
 
 function AchievementView(props: { achievement: Achievement }): JSX.Element {
-    return <ListItem>
+    return <ListItem alignItems="flex-start">
         <ListItemAvatar>
             <Avatar alt="avatar" src={props.achievement.project.imageUri ? props.achievement.project.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
         </ListItemAvatar>
@@ -47,7 +47,7 @@ function AchievementView(props: { achievement: Achievement }): JSX.Element {
 }
 
 export function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
-    return <Paper style={{ maxHeight: 600, maxWidth: 400, overflow: "auto" }}>
+    return <Paper style={{ maxHeight: 200, maxWidth: 400, overflow: "auto" }}>
         <List>
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())
