@@ -6,11 +6,13 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Achievement, getLatestAchievementsAll } from "./Achievements/achievements";
 import { Home } from "./Home/home";
+import { Box } from "@mui/material";
+import { JobStarHeader } from "./Header/header";
+import { mockProfiles } from "./Profile/mockProfiles";
 
 interface AppState {
   achievements: Achievement[]
   profileSearchQuery: string
-  selectedSkills: Set<string>
 }
 
 class App extends React.Component<{}, AppState> {
@@ -19,7 +21,6 @@ class App extends React.Component<{}, AppState> {
     this.state = {
       achievements: [],
       profileSearchQuery: "",
-      selectedSkills: new Set<string>()
     };
   }
 
@@ -31,29 +32,17 @@ class App extends React.Component<{}, AppState> {
     this.setState({ profileSearchQuery: value });
   }
 
-  async handleSkillClick(skill: string): Promise<void> {
-    const selectedSkills = this.state.selectedSkills;
-    let newSelectedSkills: Set<string>;
-    if (selectedSkills.has(skill)) {
-      selectedSkills.delete(skill);
-      newSelectedSkills = selectedSkills;
-    } else {
-      newSelectedSkills = selectedSkills.add(skill);
-    }
-    const achievements = await getLatestAchievementsAll(this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null);
-    this.setState({
-      selectedSkills: newSelectedSkills,
-      achievements
-    });
-  }
+
 
   render() {
-    return <Home
-      skills={["Javascript", "Solidity", "Marketing", "C#"]}
-      selectedSkills={this.state.selectedSkills}
-      handleSkillClick={skill => this.handleSkillClick(skill)}
-      achievements={this.state.achievements}
-      handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home>
+    return <Box>
+      <JobStarHeader></JobStarHeader>
+      <Home
+        skills={["Javascript", "Solidity", "Marketing", "C#"]}
+        workerProfiles={mockProfiles}
+        achievements={this.state.achievements}
+        handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home>
+    </Box>
   }
 }
 
