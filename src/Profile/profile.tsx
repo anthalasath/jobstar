@@ -40,7 +40,7 @@ interface ProfilePageState {
 }
 
 
-export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
+export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePageState> {
 
   constructor(props: ProfilePageProps) {
     super(props);

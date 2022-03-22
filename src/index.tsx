@@ -9,22 +9,43 @@ import { Home } from "./Home/home";
 import { Box, List } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
-import { Profile, ProfilePage } from "./Profile/profile";
+import { Profile, ProfilePageView } from "./Profile/profile";
 import { AchievementForm } from "./Achievements/achievementForm";
 import * as ethers from "ethers";
 
 interface AppState {
   achievements: Achievement[]
-  displayedProfile: Profile | null,
-  isAchievementFormOpen: boolean
+  currentPage: Page
+  prevPage: Page
 }
+
+enum PageType {
+  Profile,
+  AchievementForm,
+  Home
+}
+
+type ProfilePage = {
+  type: PageType.Profile,
+  profile: Profile
+}
+
+type AchievementFormPage = {
+  type: PageType.AchievementForm
+}
+
+type HomePage = {
+  type: PageType.Home
+}
+
+type Page = HomePage | ProfilePage | AchievementFormPage
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
       achievements: [],
-      displayedProfile: null,
-      isAchievementFormOpen: false
+      prevPage: { type: PageType.Home },
+      currentPage: { type: PageType.Home }
     };
   }
 
@@ -33,43 +54,49 @@ class App extends React.Component<{}, AppState> {
   }
 
   handleProfileClick(profile: Profile): void {
-    this.setState({
-      displayedProfile: profile
-    });
+    this.changePage({ type: PageType.Profile, profile: profile });
   }
 
   handleAddAchievementCancelClick(): void {
-    console.log("handleAddAchievementCancelClick");
+    this.goToPrevPage();
+  }
+
+  handleJobStarClick(): void {
+    this.changePage({ type: PageType.Home });
+  }
+
+  handleAddAchievementClick(): void {
+    this.changePage({ type: PageType.AchievementForm });
+  }
+
+  goToPrevPage(): void {
     this.setState({
-      isAchievementFormOpen: false
+      prevPage: { type: PageType.Home },
+      currentPage: this.state.prevPage
+    })
+  }
+
+  changePage(page: Page): void {
+    this.setState({
+      prevPage: this.state.currentPage,
+      currentPage: page
     })
   }
 
   renderContentUnderHeader(): JSX.Element {
-    if (this.state.isAchievementFormOpen) {
-      return <AchievementForm issuerAddress={ethers.constants.AddressZero} handleCancelClick={() => this.handleAddAchievementCancelClick()}></AchievementForm>
-    } else if (this.state.displayedProfile) {
-      return <ProfilePage profile={this.state.displayedProfile}></ProfilePage>
-    } else {
-      return <Home
-        skills={["Javascript", "Solidity", "Marketing", "C#"]}
-        workerProfiles={mockProfiles}
-        achievements={this.state.achievements}
-      ></Home>;
+    switch (this.state.currentPage.type) {
+      case PageType.Home:
+        return <Home
+          skills={["Javascript", "Solidity", "Marketing", "C#"]}
+          workerProfiles={mockProfiles}
+          achievements={this.state.achievements}
+        ></Home>;
+      case PageType.AchievementForm:
+        return <AchievementForm issuerAddress={ethers.constants.AddressZero} handleCancelClick={() => this.handleAddAchievementCancelClick()}></AchievementForm>
+      case PageType.Profile:
+        return <ProfilePageView profile={this.state.currentPage.profile}></ProfilePageView>
+
     }
-  }
-
-  handleJobStarClick(): void {
-    this.setState({
-      displayedProfile: null,
-      isAchievementFormOpen: false
-    });
-  }
-
-  handleAddAchievementClick(): void {
-    this.setState({
-      isAchievementFormOpen: true
-    });
   }
 
   render() {
