@@ -2,7 +2,6 @@ import { Avatar, Button, Chip, Divider, Grid, List, ListItem, ListItemAvatar, Li
 import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
 import { formatDate } from "../utils";
-import { Job, Project } from "../Skills/skills";
 import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
 import { Circle } from '@mui/icons-material';
@@ -10,14 +9,19 @@ import { DataGrid } from "@mui/x-data-grid";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
-export interface Achievement {
+
+export interface AchievementInput {
     skill: string,
-    job: Job,
-    project: Project,
+    title: string
     description: string,
+    issuerAddress: string
+    workerAddress: string
     dateOfDelivery: Date,
+    imageUri: string | null
+}
+
+export interface Achievement extends AchievementInput {
     id: string,
-    issuer: string
 }
 
 export async function getLatestAchievementsAll(skills: Set<string> | null): Promise<Achievement[]> {
@@ -43,39 +47,7 @@ export function getLatestAchievements(profile: Profile, skills: Set<string> | nu
 
 
 function getSummary(achievement: Achievement): string {
-    return `${achievement.job.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;
-}
-
-
-export function AchievementView(props: { achievement: Achievement }): JSX.Element {
-    return <ListItem alignItems="flex-start">
-        <Grid container>
-            <Grid xs={12}>
-                <h3>{props.achievement.project.name}</h3>
-            </Grid>
-            <Grid xs={6}>
-                <Chip label={props.achievement.skill} color="success" />
-            </Grid>
-            <Grid xs={6} sx={{ fontSize: "70%" }}>
-                <p>{formatDate(props.achievement.dateOfDelivery)}</p>
-            </Grid>
-            <Grid xs={12}>
-                <ListItemText primary={props.achievement.description}></ListItemText>
-            </Grid>
-            <Grid xs={6} sx={{ fontSize: "70%" }}>
-                <p>Job: {props.achievement.job.title}</p>
-            </Grid>
-            <Grid xs={6} sx={{ fontSize: "70%" }}>
-                <p>Issuer: {props.achievement.issuer}</p>
-            </Grid>
-            <Grid xs={6}>
-                <Button variant="outlined">Job ???</Button>
-            </Grid>
-            <Grid xs={6}>
-                <Button variant="contained">{props.achievement.project.teamDisplayName}</Button>
-            </Grid>
-        </Grid>
-    </ListItem>
+    return `${achievement.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;
 }
 
 export interface AchievementListProps {
@@ -104,7 +76,7 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
 function AchievementSummaryView(props: { achievement: Achievement }): JSX.Element {
     return <ListItem alignItems="flex-start">
         <ListItemAvatar>
-            <Avatar alt="avatar" src={props.achievement.project.imageUri ? props.achievement.project.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
+            <Avatar alt="avatar" src={props.achievement.imageUri ? props.achievement.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
         </ListItemAvatar>
         <ListItemText primary={getSummary(props.achievement)}></ListItemText>
     </ListItem>

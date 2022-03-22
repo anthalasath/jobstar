@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Achievement, AchievementView, getLatestAchievementsAll } from "./Achievements/achievements";
+import { Achievement, AchievementInput, getLatestAchievementsAll } from "./Achievements/achievements";
 import { Home } from "./Home/home";
 import { Box, List } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
@@ -12,6 +12,7 @@ import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePageView } from "./Profile/profile";
 import { AchievementForm } from "./Achievements/achievementForm";
 import * as ethers from "ethers";
+import { AchievementConfirmationForm } from "./Achievements/achievementConfirmationForm";
 
 interface AppState {
   achievements: Achievement[]
@@ -22,6 +23,7 @@ interface AppState {
 enum PageType {
   Profile,
   AchievementForm,
+  AchievementConfirmationForm,
   Home
 }
 
@@ -34,11 +36,17 @@ type AchievementFormPage = {
   type: PageType.AchievementForm
 }
 
+type AchievementConfirmationFormPage = {
+  type: PageType.AchievementConfirmationForm,
+  input: AchievementInput
+}
+
 type HomePage = {
   type: PageType.Home
 }
 
-type Page = HomePage | ProfilePage | AchievementFormPage
+type Page = HomePage | ProfilePage | AchievementFormPage | AchievementConfirmationFormPage
+
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
@@ -57,7 +65,11 @@ class App extends React.Component<{}, AppState> {
     this.changePage({ type: PageType.Profile, profile: profile });
   }
 
-  handleAddAchievementCancelClick(): void {
+  handleAchievementFormSubmitClick(input: AchievementInput): void {
+    this.changePage({ type: PageType.AchievementConfirmationForm, input });
+  }
+
+  handleAchievementFormCancelClick(): void {
     this.goToPrevPage();
   }
 
@@ -92,10 +104,15 @@ class App extends React.Component<{}, AppState> {
           achievements={this.state.achievements}
         ></Home>;
       case PageType.AchievementForm:
-        return <AchievementForm issuerAddress={ethers.constants.AddressZero} handleCancelClick={() => this.handleAddAchievementCancelClick()}></AchievementForm>
+        return <AchievementForm 
+        issuerAddress={ethers.constants.AddressZero} 
+        handleSubmitClick={input => this.handleAchievementFormSubmitClick(input)}
+        handleCancelClick={() => this.handleAchievementFormCancelClick()}
+      ></AchievementForm>
+      case PageType.AchievementConfirmationForm:
+        return <AchievementConfirmationForm input={this.state.currentPage.input}></AchievementConfirmationForm>
       case PageType.Profile:
         return <ProfilePageView profile={this.state.currentPage.profile}></ProfilePageView>
-
     }
   }
 

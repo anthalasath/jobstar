@@ -1,62 +1,44 @@
-import { Job, Project } from "../Skills/skills";
-import { Achievement } from "./achievements";
-
-const cosCsharpDeveloperJob: Job = {
-    title: "C# Programmer",
-    description: "Develop UI and tools for the game Clash Of Streamers"
-}
-
-const cosProject: Project = {
-    name: "Clash Of Streamers",
-    teamDisplayName: "The Singularity Group",
-    imageUri: "https://play-lh.googleusercontent.com/7WBLXw6FGMFqwmCaqU1KXLDl73oFJ6iVlQ5Dl_Wq3Mlfv95eCDwdS7kdB-5TDUuojVo=s360"
-}
-
-
-export interface MockAchievementInput {
-    skill: string,
-    job: Job,
-    project: Project,
-    description: string,
-    dateOfDelivery: Date,
-}
+import { ethers } from "ethers";
+import { Achievement, AchievementInput } from "./achievements";
 
 export class MockAchievementFactory {
     static lastId = 0;
 
     static createCoS(description: string): Achievement {
         return this.create({
+            title: "C# Developer",
             description,
             skill: "C#",
-            job: cosCsharpDeveloperJob,
-            project: cosProject,
-            dateOfDelivery: new Date(Date.parse("31 May 2022"))
+            dateOfDelivery: new Date(Date.parse("31 May 2022")),
+            issuerAddress: ethers.constants.AddressZero,
+            workerAddress: ethers.constants.AddressZero,
+            imageUri: "https://play-lh.googleusercontent.com/7WBLXw6FGMFqwmCaqU1KXLDl73oFJ6iVlQ5Dl_Wq3Mlfv95eCDwdS7kdB-5TDUuojVo=s360"
         });
     }
 
-    static createAutomation(description: string, project: Project, dateOfDelivery: Date): Achievement {
+    static createAutomation(dateOfDelivery: Date): Achievement {
         return this.create({
-            description,
             skill: "Javascript",
-            job: {
-                title: "Automation developer",
-                description: "Develop automated internal tools"
-            },
-            project,
-            dateOfDelivery
+            title: "Automation developer",
+            description: "Develop automated internal tools",
+            dateOfDelivery,
+            issuerAddress: ethers.constants.AddressZero,
+            workerAddress: ethers.constants.AddressZero,
+            imageUri: null
         });
     }
 
-    static create(input: MockAchievementInput): Achievement {
+    static create(input: AchievementInput): Achievement {
         const id = (++this.lastId).toString();
         return {
             id,
+            title: input.title,
             skill: input.skill,
-            project: input.project,
             description: input.description,
             dateOfDelivery: input.dateOfDelivery,
-            job: input.job,
-            issuer: "0x0000000000000000000000000000000000000000"
+            issuerAddress: input.issuerAddress,
+            workerAddress: input.workerAddress,
+            imageUri: input.imageUri
         }
     }
 }

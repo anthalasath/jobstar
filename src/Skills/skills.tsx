@@ -4,19 +4,6 @@ import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
 import { Profile } from "../Profile/profile";
 
-
-export interface Project {
-    name: string,
-    teamDisplayName: string,
-    imageUri: string
-}
-
-export interface Job {
-    title: string,
-    description: string
-}
-
-
 export interface Skill {
     name: string,
     achievements: Achievement[] // TODO: make it so that skills dont know about achievements, only achievmeents about skill architecture-wise

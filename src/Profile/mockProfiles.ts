@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { MockAchievementFactory } from "../Achievements/mockAchievementFactory";
 import { Profile } from "./profile";
 
@@ -27,39 +28,20 @@ export const mockProfiles: Profile[] = [
             },
             {
                 name: "Javascript", achievements: [
-                    MockAchievementFactory.createAutomation("Developed the DUBIex trading bot",
-                        {
-                            name: "DUBIex bot",
-                            teamDisplayName: "The Singularity Group",
-                            imageUri: dubiexIconUri
-                        },
-                        new Date(Date.parse("31 June 2018"))
-                    ),
-                    MockAchievementFactory.createAutomation("Developed a fraudulent transaction detection system",
-                        {
-                            name: "Gaming For Good",
-                            teamDisplayName: "The Singularity Group",
-                            imageUri: ""
-                        },
-                        new Date(Date.parse("31 June 2018"))
-                    )
+                    MockAchievementFactory.createAutomation(new Date(Date.parse("31 June 2018"))),
+                    MockAchievementFactory.createAutomation(new Date(Date.parse("31 June 2018")))
                 ]
             },
             {
                 name: "Solidity", achievements: [
                     MockAchievementFactory.create({
                         skill: "Solidity",
-                        project: {
-                            name: "DUBIex",
-                            teamDisplayName: "The Singularity Group",
-                            imageUri: dubiexIconUri
-                        },
                         description: "Audited smart contracts",
                         dateOfDelivery: new Date(Date.parse("31 May 2018")),
-                        job: {
-                            title: "Generalist Programmer",
-                            description: "Help out across a variety of projects and technologies"
-                        }
+                        title: "Generalist Programmer",
+                        issuerAddress: ethers.constants.AddressZero,
+                        workerAddress: ethers.constants.AddressZero,
+                        imageUri: null
                     })
                 ]
             },
@@ -78,17 +60,12 @@ export const mockProfiles: Profile[] = [
                 achievements: [
                     MockAchievementFactory.create({
                         skill: "wow",
-                        job: {
-                            title: "best title",
-                            description: "being the best"
-                        },
-                        project: {
-                            teamDisplayName: "the doges",
-                            name: "wow factory",
-                            imageUri: "https://static.wikia.nocookie.net/d17a9654-4ee8-44cf-baf1-98d7eaa96ed8/scale-to-width/755"
-                        },
-                        description: "was so good u wont believe it",
-                        dateOfDelivery: new Date(Date.parse("31 February 2022"))
+                        title: "best title",
+                        description: "being the best",
+                        imageUri: "https://static.wikia.nocookie.net/d17a9654-4ee8-44cf-baf1-98d7eaa96ed8/scale-to-width/755",
+                        dateOfDelivery: new Date(Date.parse("31 February 2022")),
+                        issuerAddress: ethers.constants.AddressZero,
+                        workerAddress: ethers.constants.AddressZero,
                     })
                 ]
             },
@@ -107,17 +84,12 @@ export const mockProfiles: Profile[] = [
                 achievements: [
                     MockAchievementFactory.create({
                         skill: "Solidity",
-                        job: {
-                            title: "Solidity programmer",
-                            description: "Writing smart contracts"
-                        },
-                        project: {
-                            teamDisplayName: "Solo",
-                            name: "some ethereum stuff",
-                            imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Ethereum_logo_translucent.svg/800px-Ethereum_logo_translucent.svg.png"
-                        },
-                        description: "excellent security skills",
-                        dateOfDelivery: new Date(Date.parse("17 February 2022"))
+                        title: "Solidity programmer",
+                        description: "Writing smart contracts",
+                        imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Ethereum_logo_translucent.svg/800px-Ethereum_logo_translucent.svg.png",
+                        dateOfDelivery: new Date(Date.parse("17 February 2022")),
+                        issuerAddress: ethers.constants.AddressZero,
+                        workerAddress: ethers.constants.AddressZero,
                     })
                 ]
             }
