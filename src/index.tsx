@@ -10,12 +10,12 @@ import { Box, List } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePage } from "./Profile/profile";
-import { AddAchievementModal } from "./Achievements/addAchievement";
+import { AddAchievementPage } from "./Achievements/addAchievement";
 
 interface AppState {
   achievements: Achievement[]
   displayedProfile: Profile | null,
-  isAddAchievementModalOpen: boolean
+  isAddAchievementPageOpen: boolean
 }
 class App extends React.Component<{}, AppState> {
   constructor(props) {
@@ -23,7 +23,7 @@ class App extends React.Component<{}, AppState> {
     this.state = {
       achievements: [],
       displayedProfile: null,
-      isAddAchievementModalOpen: false
+      isAddAchievementPageOpen: false
     };
   }
 
@@ -37,9 +37,16 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
+  handleAddAchievementCancelClick(): void {
+    console.log("handleAddAchievementCancelClick");
+    this.setState({
+      isAddAchievementPageOpen: false
+    })
+  }
+
   renderContentUnderHeader(): JSX.Element {
-    if (this.state.isAddAchievementModalOpen) {
-      return <AddAchievementModal></AddAchievementModal>
+    if (this.state.isAddAchievementPageOpen) {
+      return <AddAchievementPage handleCancelClick={() => this.handleAddAchievementCancelClick()}></AddAchievementPage>
     } else if (this.state.displayedProfile) {
       return <ProfilePage profile={this.state.displayedProfile}></ProfilePage>
     } else {
@@ -55,13 +62,13 @@ class App extends React.Component<{}, AppState> {
   handleJobStarClick(): void {
     this.setState({
       displayedProfile: null,
-      isAddAchievementModalOpen: false
+      isAddAchievementPageOpen: false
     });
   }
 
   handleAddAchievementClick(): void {
     this.setState({
-      isAddAchievementModalOpen: true
+      isAddAchievementPageOpen: true
     });
   }
 

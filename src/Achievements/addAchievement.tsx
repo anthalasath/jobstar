@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 
 export interface AddAchievementPageProps {
+    handleCancelClick: () => void
 }
 
 export interface AddAchievementPageState {
@@ -25,7 +26,7 @@ function TextFieldWithLabel(props: TextFieldWithLabelProps) {
     </Stack>
 }
 
-export class AddAchievementModal extends React.Component<AddAchievementPageProps, AddAchievementPageState> {
+export class AddAchievementPage extends React.Component<AddAchievementPageProps, AddAchievementPageState> {
 
     constructor(props: AddAchievementPageProps) {
         super(props);
@@ -67,7 +68,7 @@ export class AddAchievementModal extends React.Component<AddAchievementPageProps
             <TextFieldWithLabel label="Skill" handleChange={this.handleSkillChange}></TextFieldWithLabel>
             <TextFieldWithLabel label="Worker" handleChange={this.handleWorkerChange}></TextFieldWithLabel>
             <Stack direction="row">
-                <Button variant="contained">Cancel</Button>
+                <Button variant="contained"onClick={() => this.props.handleCancelClick()}>Cancel</Button>
                 <Button variant="contained">Submit</Button>
             </Stack>
         </Stack>
