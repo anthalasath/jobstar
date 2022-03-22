@@ -7,6 +7,7 @@ import "@fontsource/roboto/700.css";
 
 export interface JobStarHeaderProps {
     handleJobStarClick: () => void
+    handleAddAchievementClick: () => void
 }
 
 export function JobStarHeader(props: JobStarHeaderProps) {
@@ -26,7 +27,7 @@ export function JobStarHeader(props: JobStarHeaderProps) {
             <p>Share love with jobs</p>
         </Grid>
         <Grid item xs={4}>
-            <Button variant="outlined">Add an Achievement</Button>
+            <Button variant="outlined" onClick={() => props.handleAddAchievementClick()}>Add an Achievement</Button>
         </Grid>
     </Grid>
     return <CenteredPage element={header}></CenteredPage>

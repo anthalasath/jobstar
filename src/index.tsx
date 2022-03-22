@@ -10,18 +10,20 @@ import { Box, List } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePage } from "./Profile/profile";
+import { AddAchievementModal } from "./Achievements/addAchievement";
 
 interface AppState {
   achievements: Achievement[]
-  displayedProfile: Profile | null
+  displayedProfile: Profile | null,
+  isAddAchievementModalOpen: boolean
 }
-
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
       achievements: [],
-      displayedProfile: null
+      displayedProfile: null,
+      isAddAchievementModalOpen: false
     };
   }
 
@@ -36,7 +38,9 @@ class App extends React.Component<{}, AppState> {
   }
 
   renderContentUnderHeader(): JSX.Element {
-    if (this.state.displayedProfile) {
+    if (this.state.isAddAchievementModalOpen) {
+      return <AddAchievementModal></AddAchievementModal>
+    } else if (this.state.displayedProfile) {
       return <ProfilePage profile={this.state.displayedProfile}></ProfilePage>
     } else {
       return <Home
@@ -50,13 +54,29 @@ class App extends React.Component<{}, AppState> {
 
   handleJobStarClick(): void {
     this.setState({
-      displayedProfile: null
+      displayedProfile: null,
+      isAddAchievementModalOpen: false
+    });
+  }
+
+  handleAddAchievementModalClose(): void {
+    this.setState({
+      isAddAchievementModalOpen: false
+    });
+  }
+
+  handleAddAchievementClick(): void {
+    this.setState({
+      isAddAchievementModalOpen: true
     });
   }
 
   render() {
     return <Box>
-      <JobStarHeader handleJobStarClick={() => this.handleJobStarClick()}></JobStarHeader>
+      <JobStarHeader
+        handleJobStarClick={() => this.handleJobStarClick()}
+        handleAddAchievementClick={() => this.handleAddAchievementClick()}
+      ></JobStarHeader>
       {this.renderContentUnderHeader()}
     </Box>
   }
