@@ -5,6 +5,7 @@ import { formatDate } from "../utils";
 import { Job, Project } from "../Skills/skills";
 import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
+import { Circle } from '@mui/icons-material';
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -52,7 +53,7 @@ export function AchievementView(props: { achievement: Achievement }): JSX.Elemen
                 <h3>{props.achievement.project.name}</h3>
             </Grid>
             <Grid xs={6}>
-                <Chip label={props.achievement.skill} color="success"/>
+                <Chip label={props.achievement.skill} color="success" />
             </Grid>
             <Grid xs={6} sx={{ fontSize: "70%" }}>
                 <p>{formatDate(props.achievement.dateOfDelivery)}</p>
