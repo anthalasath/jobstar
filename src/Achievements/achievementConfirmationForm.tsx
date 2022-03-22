@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { NamedAddressView } from "../utils";
 import { AchievementInput } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
@@ -8,13 +8,19 @@ interface AchievementConfirmationFormProps {
 }
 
 export function AchievementConfirmationForm(props: AchievementConfirmationFormProps) {
-    return <Stack>
-        <AddAchievementHeader></AddAchievementHeader>
-        <SendAchievementConfirmation
-            workerAddress={props.input.workerAddress}
-            issuerAddress={props.input.issuerAddress}
-        ></SendAchievementConfirmation>
-    </Stack>
+    return <Grid container>
+        <Grid xs={4}></Grid>
+        <Grid xs={4}>
+            <Stack>
+                <AddAchievementHeader></AddAchievementHeader>
+                <SendAchievementConfirmation
+                    workerAddress={props.input.workerAddress}
+                    issuerAddress={props.input.issuerAddress}
+                ></SendAchievementConfirmation>
+            </Stack>
+        </Grid>
+        <Grid xs={4}></Grid>
+    </Grid>
 }
 
 interface SendAchievementConfirmationProps {
