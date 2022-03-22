@@ -1,4 +1,5 @@
-import { Grid } from "@mui/material";
+import { Chip, Grid } from "@mui/material";
+import { BigNumberish } from "ethers";
 import * as React from "react";
 
 export function formatDate(date: Date): string {
@@ -9,17 +10,22 @@ export function firstCharToUpper(s: string): string {
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-export interface NamedAddressViewProps {
-    name: string
-    address: string
+export interface ProfileIdWithRoleViewProps {
+    role: string
+    profileId: BigNumberish
 }
 
-export function NamedAddressView(props: NamedAddressViewProps) {
+export function ProfileIdWithRoleView(props: ProfileIdWithRoleViewProps) {
+    return  <p><b>{props.role}: {props.profileId}</b></p>
+}
+
+export interface ProfileWithRoleViewProps extends ProfileIdWithRoleViewProps {
+    name: string
+}
+
+export function ProfileWithRoleView(props: ProfileWithRoleViewProps) {
     return <div>
-        <p><b>{props.name}:</b></p>
-        <Grid container>
-            <Grid xs={1}></Grid>
-            <Grid xs={11}><p>{props.address}</p></Grid>
-        </Grid>
+        <ProfileIdWithRoleView role={props.role} profileId={props.profileId}></ProfileIdWithRoleView>
+        <Chip label={props.name} color="info"></Chip>
     </div>
 }

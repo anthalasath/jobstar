@@ -10,8 +10,8 @@ export class MockAchievementFactory {
             description,
             skill: "C#",
             dateOfDelivery: new Date(Date.parse("31 May 2022")),
-            issuerAddress: ethers.constants.AddressZero,
-            workerAddress: ethers.constants.AddressZero,
+            issuerProfileId: 0,
+            workerProfileId: 0,
             imageUri: "https://play-lh.googleusercontent.com/7WBLXw6FGMFqwmCaqU1KXLDl73oFJ6iVlQ5Dl_Wq3Mlfv95eCDwdS7kdB-5TDUuojVo=s360"
         });
     }
@@ -22,8 +22,8 @@ export class MockAchievementFactory {
             title: "Automation developer",
             description: "Develop automated internal tools",
             dateOfDelivery,
-            issuerAddress: ethers.constants.AddressZero,
-            workerAddress: ethers.constants.AddressZero,
+            issuerProfileId: 0,
+            workerProfileId: 0,
             imageUri: null
         });
     }
@@ -36,8 +36,8 @@ export class MockAchievementFactory {
             skill: input.skill,
             description: input.description,
             dateOfDelivery: input.dateOfDelivery,
-            issuerAddress: input.issuerAddress,
-            workerAddress: input.workerAddress,
+            issuerProfileId: input.issuerProfileId,
+            workerProfileId: input.workerProfileId,
             imageUri: input.imageUri
         }
     }

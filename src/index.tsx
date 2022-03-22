@@ -105,7 +105,7 @@ class App extends React.Component<{}, AppState> {
         ></Home>;
       case PageType.AchievementForm:
         return <AchievementForm 
-        issuerAddress={ethers.constants.AddressZero} 
+        issuerProfileId={0} 
         handleSubmitClick={input => this.handleAchievementFormSubmitClick(input)}
         handleCancelClick={() => this.handleAchievementFormCancelClick()}
       ></AchievementForm>

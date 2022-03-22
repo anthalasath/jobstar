@@ -1,11 +1,13 @@
 import { Avatar, Button, Chip, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
 import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
-import { formatDate } from "../utils";
+import { formatDate, ProfileWithRoleView } from "../utils";
 import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
 import { Circle } from '@mui/icons-material';
 import { DataGrid } from "@mui/x-data-grid";
+import { SkillList } from "../Skills/skills";
+import { BigNumberish } from "ethers";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -14,8 +16,8 @@ export interface AchievementInput {
     skill: string,
     title: string
     description: string,
-    issuerAddress: string
-    workerAddress: string
+    issuerProfileId: BigNumberish
+    workerProfileId: BigNumberish
     dateOfDelivery: Date,
     imageUri: string | null
 }
@@ -70,6 +72,19 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
         <div style={{ height: 300, width: '75%' }}>
             <DataGrid rows={rows} columns={columns} />
         </div>
+    </Stack>
+}
+
+// TODO: Profile handles
+export function AchievementInputView(props: { achievement: AchievementInput }): JSX.Element {
+    console.log(JSON.stringify(mockProfiles, null, 1))
+    return <Stack>
+        <p>{props.achievement.title}</p>
+        <SkillList skills={[props.achievement.skill]} selectedSkills={new Set<string>()} handleClick={() => { }}></SkillList>
+        {props.achievement.imageUri ? <Avatar variant="square" src={props.achievement.imageUri} /> : null}
+        <p>{props.achievement.description}</p>
+        <ProfileWithRoleView role="Worker" name={"Worker profile handle"} profileId={props.achievement.workerProfileId}></ProfileWithRoleView>
+        <ProfileWithRoleView role="Issuer" name={"Issuer profile handle"} profileId={props.achievement.issuerProfileId}></ProfileWithRoleView>
     </Stack>
 }
 

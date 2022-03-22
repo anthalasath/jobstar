@@ -1,6 +1,7 @@
 import { Button, Grid, Paper, Stack } from "@mui/material";
-import { NamedAddressView } from "../utils";
-import { AchievementInput } from "./achievements";
+import { BigNumberish } from "ethers";
+import { ProfileIdWithRoleView } from "../utils";
+import { AchievementInput, AchievementInputView } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
 
 interface AchievementConfirmationFormProps {
@@ -14,9 +15,10 @@ export function AchievementConfirmationForm(props: AchievementConfirmationFormPr
             <Stack>
                 <AddAchievementHeader></AddAchievementHeader>
                 <SendAchievementConfirmation
-                    workerAddress={props.input.workerAddress}
-                    issuerAddress={props.input.issuerAddress}
+                    workerProfileId={props.input.workerProfileId}
+                    issuerProfileId={props.input.issuerProfileId}
                 ></SendAchievementConfirmation>
+                <AchievementInputView achievement={props.input}></AchievementInputView>
             </Stack>
         </Grid>
         <Grid xs={4}></Grid>
@@ -24,15 +26,15 @@ export function AchievementConfirmationForm(props: AchievementConfirmationFormPr
 }
 
 interface SendAchievementConfirmationProps {
-    workerAddress: string
-    issuerAddress: string
+    workerProfileId: BigNumberish
+    issuerProfileId: BigNumberish
 }
 
 function SendAchievementConfirmation(props: SendAchievementConfirmationProps) {
     return <Paper>
         <p>The achievement will be sent for signature</p>
-        <NamedAddressView name="Issuer" address={props.issuerAddress}></NamedAddressView>
-        <NamedAddressView name="Worker" address={props.workerAddress}></NamedAddressView>
+        <ProfileIdWithRoleView role="Issuer" profileId={props.issuerProfileId}></ProfileIdWithRoleView>
+        <ProfileIdWithRoleView role="Worker" profileId={props.workerProfileId}></ProfileIdWithRoleView>
         <Stack direction="row" spacing={4}>
             <Button variant="contained" color="inherit">Back</Button>
             <Button variant="contained" color="info">Submit</Button>

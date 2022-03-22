@@ -1,14 +1,15 @@
 import { Button, Divider, Grid, Modal, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { BigNumberish } from "ethers";
 import * as React from "react";
-import { NamedAddressView } from "../utils";
+import { ProfileIdWithRoleView } from "../utils";
 import { AchievementInput } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
 
 export interface AchievementFormProps {
     handleSubmitClick: (input: AchievementInput) => void
     handleCancelClick: () => void
-    issuerAddress: string
+    issuerProfileId: BigNumberish
 }
 
 export interface AchievementFormState {
@@ -67,7 +68,7 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                     <Divider></Divider>
                     <TextField label="Worker" onChange={e => this.handleWorkerChange(e.target.value)}></TextField>
                     <Divider></Divider>
-                    <NamedAddressView name="Issuer" address={this.props.issuerAddress}></NamedAddressView>
+                    <ProfileIdWithRoleView role="Issuer" profileId={this.props.issuerProfileId}></ProfileIdWithRoleView>
                     <Divider></Divider>
                     <Grid container>
                         <Grid xs={4}>
@@ -75,8 +76,8 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                         <Grid xs={4}>
                             <Stack spacing={2}>
                                 <Button variant="contained" color="info" onClick={() => this.props.handleSubmitClick({
-                                    issuerAddress: this.props.issuerAddress,
-                                    workerAddress: this.state.worker,
+                                    issuerProfileId: this.props.issuerProfileId,
+                                    workerProfileId: this.state.worker,
                                     description: this.state.description,
                                     skill: this.state.skill,
                                     title: this.state.title,

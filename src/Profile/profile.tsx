@@ -5,6 +5,7 @@ import * as React from "react";
 import { AchievementList, getAchievementsCount, getLatestAchievements } from "../Achievements/achievements";
 import { khKH } from "@mui/material/locale";
 import { firstCharToUpper } from "../utils";
+import { BigNumberish } from "ethers";
 
 export interface ProfileSummaryProps {
   profile: Profile
@@ -81,7 +82,7 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
 }
 
 export interface Profile {
-  id: string,
+  id: BigNumberish,
   handle: string,
   imageUri: string,
   skills: Skill[],

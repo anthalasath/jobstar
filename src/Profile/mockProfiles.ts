@@ -2,8 +2,6 @@ import { ethers } from "ethers";
 import { MockAchievementFactory } from "../Achievements/mockAchievementFactory";
 import { Profile } from "./profile";
 
-const dubiexIconUri = "https://scontent.fcrl1-1.fna.fbcdn.net/v/t1.6435-9/35646161_258309928247424_9059279955157843968_n.png?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vNDV-B1TKuAAX-BaGkt&_nc_ht=scontent.fcrl1-1.fna&oh=00_AT_P6SmRMtZJM3jqpSl7GrlyH0MYSk-i3srHYfruDohgzQ&oe=625C16E4";
-
 export const mockProfiles: Profile[] = [
     {
         id: "1",
@@ -39,8 +37,8 @@ export const mockProfiles: Profile[] = [
                         description: "Audited smart contracts",
                         dateOfDelivery: new Date(Date.parse("31 May 2018")),
                         title: "Generalist Programmer",
-                        issuerAddress: ethers.constants.AddressZero,
-                        workerAddress: ethers.constants.AddressZero,
+                        issuerProfileId: 1,
+                        workerProfileId: 1,
                         imageUri: null
                     })
                 ]
@@ -64,8 +62,8 @@ export const mockProfiles: Profile[] = [
                         description: "being the best",
                         imageUri: "https://static.wikia.nocookie.net/d17a9654-4ee8-44cf-baf1-98d7eaa96ed8/scale-to-width/755",
                         dateOfDelivery: new Date(Date.parse("31 February 2022")),
-                        issuerAddress: ethers.constants.AddressZero,
-                        workerAddress: ethers.constants.AddressZero,
+                        issuerProfileId: 1,
+                        workerProfileId: 1,
                     })
                 ]
             },
@@ -88,8 +86,8 @@ export const mockProfiles: Profile[] = [
                         description: "Writing smart contracts",
                         imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Ethereum_logo_translucent.svg/800px-Ethereum_logo_translucent.svg.png",
                         dateOfDelivery: new Date(Date.parse("17 February 2022")),
-                        issuerAddress: ethers.constants.AddressZero,
-                        workerAddress: ethers.constants.AddressZero,
+                        issuerProfileId: 1,
+                        workerProfileId: 1,
                     })
                 ]
             }
