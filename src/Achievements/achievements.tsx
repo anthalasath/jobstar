@@ -6,6 +6,7 @@ import { Job, Project } from "../Skills/skills";
 import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
 import { Circle } from '@mui/icons-material';
+import { DataGrid } from "@mui/x-data-grid";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -82,17 +83,22 @@ export interface AchievementListProps {
 }
 
 export function AchievementList(props: AchievementListProps): JSX.Element {
-    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
-        <List>
-            {props.achievements
-                .sort(achievement => achievement.dateOfDelivery.getTime())
-                .map(achievement => <>
-                    <AchievementView key={achievement.id} achievement={achievement}></AchievementView>
-                    <Divider />
-                </>)
-            }
-        </List>
-    </Paper>
+    const columns = [
+        { field: "achievements", headerName: "Achievements", width: 150 },
+    ];
+    const rows = props.achievements.map(a => {
+        return {
+            id: a.id,
+            achievements: a.description
+        }
+    });
+    // TODO: https://github.com/mui/mui-x/issues/1040#issuecomment-780484281 for seeing full cell content
+    return <Stack>
+        <h3>Browse achievements</h3>
+        <div style={{ height: 300, width: '75%' }}>
+            <DataGrid rows={rows} columns={columns} />
+        </div>
+    </Stack>
 }
 
 function AchievementSummaryView(props: { achievement: Achievement }): JSX.Element {
