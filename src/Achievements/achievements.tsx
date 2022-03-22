@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
+import { Avatar, Button, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
 import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
 import { formatDate } from "../utils";
@@ -14,13 +14,21 @@ export interface Achievement {
     project: Project,
     description: string,
     dateOfDelivery: Date,
-    id: string
+    id: string,
+    issuer: string
 }
 
 export async function getLatestAchievementsAll(skills: Set<string> | null): Promise<Achievement[]> {
     return flatten(mockProfiles
         .map(p => getLatestAchievements(p, skills)))
         ;
+}
+
+export function getAchievementsCount(profile: Profile): number {
+    const achievements: Achievement[] = flatten(
+        profile.skills
+            .map(skill => skill.achievements));
+    return achievements.length;
 }
 
 export function getLatestAchievements(profile: Profile, skills: Set<string> | null): Achievement[] {
@@ -32,27 +40,74 @@ export function getLatestAchievements(profile: Profile, skills: Set<string> | nu
 }
 
 
-function formatAchievement(achievement: Achievement): string {
+function getSummary(achievement: Achievement): string {
     return `${achievement.job.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;
 }
 
 
 function AchievementView(props: { achievement: Achievement }): JSX.Element {
     return <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-            <Avatar alt="avatar" src={props.achievement.project.imageUri ? props.achievement.project.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={formatAchievement(props.achievement)}></ListItemText>
+        <ListItemText primary={props.achievement.project.name}></ListItemText>
+        <Stack direction="row">
+            <ListItemText primary={props.achievement.skill}></ListItemText>
+            <ListItemText primary={formatDate(props.achievement.dateOfDelivery)}></ListItemText>
+        </Stack>
+        <ListItemText primary={props.achievement.description}></ListItemText>
+        <Grid container>
+            <Grid xs={6}>
+                <p>Job: {props.achievement.job.title}</p>
+            </Grid>
+            <Grid xs={6}>
+                <p>Issuer: {props.achievement.issuer}</p>
+            </Grid>
+            <Grid xs={6}>
+                <p>Job ???</p>
+            </Grid>
+            <Grid xs={6}>
+                <Button variant="outlined">{props.achievement.project.teamDisplayName}</Button>
+            </Grid>
+        </Grid>
     </ListItem>
 }
 
-export function AchievementList(props: { achievements: Achievement[] }): JSX.Element {
+export interface AchievementListProps {
+    achievements: Achievement[]
+}
+
+export function AchievementList(props: AchievementListProps): JSX.Element {
     return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
         <List>
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())
                 .map(achievement => <>
-                    <AchievementView key={achievement.id} achievement={achievement}></AchievementView>
+                    <AchievementSummaryView key={achievement.id} achievement={achievement}></AchievementSummaryView>
+                    <Divider />
+                </>)
+            }
+        </List>
+    </Paper>
+}
+
+function AchievementSummaryView(props: { achievement: Achievement }): JSX.Element {
+    return <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+            <Avatar alt="avatar" src={props.achievement.project.imageUri ? props.achievement.project.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={getSummary(props.achievement)}></ListItemText>
+    </ListItem>
+}
+
+export interface AchievementSummaryListProps {
+    achievements: Achievement[]
+}
+
+export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.Element {
+    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
+        <List>
+            {props.achievements
+                .sort(achievement => achievement.dateOfDelivery.getTime())
+                .map(achievement => <>
+                    <AchievementSummaryView key={achievement.id} achievement={achievement}></AchievementSummaryView>
                     <Divider />
                 </>)
             }
@@ -63,6 +118,6 @@ export function AchievementList(props: { achievements: Achievement[] }): JSX.Ele
 export function LatestAchievementsView(props: { achievements: Achievement[] }): JSX.Element {
     return <Stack>
         <h2>Latest achievements</h2>
-        <AchievementList achievements={props.achievements}></AchievementList>
+        <AchievementSummaryList achievements={props.achievements}></AchievementSummaryList>
     </Stack>
 }

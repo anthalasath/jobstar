@@ -55,7 +55,8 @@ export class MockAchievementFactory {
             project: input.project,
             description: input.description,
             dateOfDelivery: input.dateOfDelivery,
-            job: input.job
+            job: input.job,
+            issuer: "0x0000000000000000000000000000000000000000"
         }
     }
 }
