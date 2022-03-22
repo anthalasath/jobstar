@@ -9,9 +9,12 @@ export interface ProfileSummaryProps {
 }
 
 export function ProfileSummary(props: ProfileSummaryProps) {
-  return <Stack spacing={2} alignItems="center" >
-    <h2>{props.profile.handle}</h2>
-    <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 150, width: 150 }}></Avatar>
+  return <Stack>
+    <Stack spacing={2} alignItems="center" direction="row">
+      <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 75, width: 75 }}></Avatar>
+      <h2>{props.profile.handle}</h2>
+    </Stack>
+      {props.profile.discordHandle ? <p>Discord: {props.profile.discordHandle}</p> : null}
   </Stack>
 }
 
@@ -43,7 +46,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
     if (this.state.selectedSkills.size > 0) {
       return <AchievementList achievements={getLatestAchievements(this.props.profile, this.state.selectedSkills)}></AchievementList>
     }
-    return <Button variant="outlined">
+    return <Button variant="outlined" sx={{width: 330, height: 200}}>
       <h3>{getAchievementsCount(this.props.profile)} achievements</h3>
     </Button>;
   }
@@ -51,8 +54,12 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
   render() {
     return (
       <Grid container>
-        <Grid xs={12}>
+        <Grid xs={4}>
+        </Grid>
+        <Grid xs={4}>
           <ProfileSummary profile={this.props.profile}></ProfileSummary>
+        </Grid>
+        <Grid xs={4}>
         </Grid>
         <Grid xs={4}>
         </Grid>
@@ -61,14 +68,12 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
         </Grid>
         <Grid xs={4}>
         </Grid>
-        <Grid xs={3}>
+        <Grid xs={4}>
         </Grid>
-        <Grid xs={3}>
+        <Grid xs={2}>
           <SkillList skills={this.props.profile.skills} selectedSkills={this.state.selectedSkills} handleClick={skill => this.handleSkillClick(skill)}></SkillList>
         </Grid>
-        <Grid xs={1}>
-        </Grid>
-        <Grid xs={3}>
+        <Grid xs={4}>
           {this.renderAchievements()}
         </Grid>
         <Grid xs={2}>
@@ -82,7 +87,8 @@ export interface Profile {
   id: string,
   handle: string,
   imageUri: string,
-  skills: Skill[]
+  skills: Skill[],
+  discordHandle: string | null
 }
 
 export async function getProfile(handle: string): Promise<Profile | undefined> {
