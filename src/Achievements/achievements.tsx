@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
+import { Avatar, Button, Chip, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from "@mui/material"
 import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
 import { formatDate } from "../utils";
@@ -45,23 +45,29 @@ function getSummary(achievement: Achievement): string {
 }
 
 
-function AchievementView(props: { achievement: Achievement }): JSX.Element {
+export function AchievementView(props: { achievement: Achievement }): JSX.Element {
     return <ListItem alignItems="flex-start">
-        <ListItemText primary={props.achievement.project.name}></ListItemText>
-        <Stack direction="row">
-            <ListItemText primary={props.achievement.skill}></ListItemText>
-            <ListItemText primary={formatDate(props.achievement.dateOfDelivery)}></ListItemText>
-        </Stack>
-        <ListItemText primary={props.achievement.description}></ListItemText>
         <Grid container>
-            <Grid xs={6}>
-                <p>Job: {props.achievement.job.title}</p>
+            <Grid xs={12}>
+                <h3>{props.achievement.project.name}</h3>
             </Grid>
             <Grid xs={6}>
+                <Chip label={props.achievement.skill} color="success"/>
+            </Grid>
+            <Grid xs={6} sx={{ fontSize: "70%" }}>
+                <p>{formatDate(props.achievement.dateOfDelivery)}</p>
+            </Grid>
+            <Grid xs={12}>
+                <ListItemText primary={props.achievement.description}></ListItemText>
+            </Grid>
+            <Grid xs={6} sx={{ fontSize: "70%" }}>
+                <p>Job: {props.achievement.job.title}</p>
+            </Grid>
+            <Grid xs={6} sx={{ fontSize: "70%" }}>
                 <p>Issuer: {props.achievement.issuer}</p>
             </Grid>
             <Grid xs={6}>
-                <p>Job ???</p>
+                <Button variant="outlined">Job ???</Button>
             </Grid>
             <Grid xs={6}>
                 <Button variant="outlined">{props.achievement.project.teamDisplayName}</Button>
@@ -80,7 +86,7 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())
                 .map(achievement => <>
-                    <AchievementSummaryView key={achievement.id} achievement={achievement}></AchievementSummaryView>
+                    <AchievementView key={achievement.id} achievement={achievement}></AchievementView>
                     <Divider />
                 </>)
             }

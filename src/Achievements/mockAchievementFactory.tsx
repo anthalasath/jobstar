@@ -37,7 +37,7 @@ export class MockAchievementFactory {
     static createAutomation(description: string, project: Project, dateOfDelivery: Date): Achievement {
         return this.create({
             description,
-            skill: "NodeJS",
+            skill: "Javascript",
             job: {
                 title: "Automation developer",
                 description: "Develop automated internal tools"
