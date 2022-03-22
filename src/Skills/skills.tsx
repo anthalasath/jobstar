@@ -1,4 +1,4 @@
-import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper } from "@mui/material"
+import { Checkbox, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button } from "@mui/material"
 import { Achievement } from "../Achievements/achievements"
 import * as React from "react";
 import { mockProfiles } from "../Profile/mockProfiles";
@@ -23,40 +23,21 @@ export interface Skill {
 }
 
 export interface SkillListProps {
-    skills: Skill[],
+    skills: string[],
     selectedSkills: Set<string>,
     handleClick: (skill: string) => void
 }
 
 export function SkillList(props: SkillListProps) {
-    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
-        {props.skills
-            .sort(skill => 0 - skill.achievements.length)
-            .map(skill => <SkillListItemView
-                key={skill.name}
-                isChecked={props.selectedSkills.has(skill.name)}
-                skill={skill}
-                handleClick={props.handleClick}></SkillListItemView>)
-        }
-    </List>
-    </Paper>
-}
+    return <Grid container spacing={2}>
+        <Grid xs={12}><h3>Skills</h3></Grid>
+        {props.skills.map(skill => {
+            return <Grid xs={4}>
+                <Button variant={props.selectedSkills.has(skill) ? "contained" : "outlined"} color="info" onClick={() => props.handleClick(skill)}>{skill}</Button>
+            </Grid>
+        })}
 
-function SkillListItemView(props: { skill: Skill, isChecked: boolean, handleClick: (skill: string) => void }) {
-    return <ListItem>
-        <ListItemButton onClick={() => props.handleClick(props.skill.name)}>
-            <ListItemIcon>
-                <Checkbox
-                    edge="start"
-                    checked={props.isChecked}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': props.skill.name }}
-                />
-            </ListItemIcon>
-            <ListItemText primary={`${props.skill.name} (${props.skill.achievements.length})`}></ListItemText>
-        </ListItemButton>
-    </ListItem>
+    </Grid>
 }
 
 export async function getProfilesWithSkill(skill: string): Promise<Profile[]> {

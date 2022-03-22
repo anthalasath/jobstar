@@ -1,7 +1,7 @@
 import { Grid, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { Achievement, LatestAchievementsView, getAchievementsCount } from "../Achievements/achievements";
-import { toggleSkill } from "../Skills/skills";
+import { toggleSkill, SkillList } from "../Skills/skills";
 import { Profile } from "../Profile/profile";
 import * as React from "react";
 import { DataGrid } from '@mui/x-data-grid';
@@ -16,7 +16,6 @@ export interface HomeProps {
     workerProfiles: Profile[]
     skills: string[]
     achievements: Achievement[],
-    handleWorkerProfileClick: (profile: Profile) => void
 }
 
 interface HomeState {
@@ -51,10 +50,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <Grid item xs={4}>
                 </Grid>
                 <Grid item xs={4}>
-                    <HomeSkillList
+                    <SkillList
                         skills={this.props.skills}
                         selectedSkills={this.state.selectedSkills}
-                        handleClick={skill => this.handleSkillClick(skill)}></HomeSkillList>
+                        handleClick={skill => this.handleSkillClick(skill)}></SkillList>
                 </Grid>
                 <Grid item xs={4}>
                 </Grid>
@@ -62,8 +61,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 </Grid>
                 <Grid item xs={4}>
                     <WorkerProfiles profiles={this.props.workerProfiles
-                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}
-                        handleClick={(p) => this.props.handleWorkerProfileClick(p)}></WorkerProfiles>
+                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}></WorkerProfiles>
                 </Grid>
                 <Grid item xs={4}>
                 </Grid>
@@ -72,27 +70,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 }
 
-interface HomeSkillListProps {
-    skills: string[],
-    selectedSkills: Set<string>,
-    handleClick: (skill: string) => void
-}
-
-function HomeSkillList(props: HomeSkillListProps) {
-    return <Grid container spacing={2}>
-        <Grid xs={12}><h3>Skills</h3></Grid>
-        {props.skills.map(skill => {
-            return <Grid xs={4}>
-                <Button variant={props.selectedSkills.has(skill) ? "contained" : "outlined"} color="info" onClick={() => props.handleClick(skill)}>{skill}</Button>
-            </Grid>
-        })}
-
-    </Grid>
-}
 
 interface WorkerProfilesProps {
     profiles: Profile[]
-    handleClick: (profile: Profile) => void
 }
 
 function WorkerProfiles(props: WorkerProfilesProps) {

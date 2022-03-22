@@ -14,7 +14,7 @@ export function ProfileSummary(props: ProfileSummaryProps) {
       <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 75, width: 75 }}></Avatar>
       <h2>{props.profile.handle}</h2>
     </Stack>
-      {props.profile.discordHandle ? <p>Discord: {props.profile.discordHandle}</p> : null}
+    {props.profile.discordHandle ? <p>Discord: {props.profile.discordHandle}</p> : null}
   </Stack>
 }
 
@@ -42,41 +42,25 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
     });
   }
 
-  renderAchievements(): JSX.Element | null {
-    if (this.state.selectedSkills.size > 0) {
-      return <AchievementList achievements={getLatestAchievements(this.props.profile, this.state.selectedSkills)}></AchievementList>
-    }
-    return <Button variant="outlined" sx={{width: 330, height: 200}}>
-      <h3>{getAchievementsCount(this.props.profile)} achievements</h3>
-    </Button>;
-  }
-
   render() {
     return (
       <Grid container>
         <Grid xs={4}>
         </Grid>
         <Grid xs={4}>
-          <ProfileSummary profile={this.props.profile}></ProfileSummary>
+          <Stack spacing={5}>
+            <ProfileSummary profile={this.props.profile}></ProfileSummary>
+            <Button variant="outlined" sx={{ height: 50 }}>
+              <h3>{getAchievementsCount(this.props.profile)} achievements</h3>
+            </Button>
+            <SkillList
+              skills={this.props.profile.skills.map(s => s.name)}
+              selectedSkills={this.state.selectedSkills}
+              handleClick={skill => this.handleSkillClick(skill)}></SkillList>
+            <AchievementList achievements={getLatestAchievements(this.props.profile, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null)}></AchievementList>
+          </Stack>
         </Grid>
         <Grid xs={4}>
-        </Grid>
-        <Grid xs={4}>
-        </Grid>
-        <Grid xs={4}>
-          <h3>Skills and Achievements</h3>
-        </Grid>
-        <Grid xs={4}>
-        </Grid>
-        <Grid xs={4}>
-        </Grid>
-        <Grid xs={2}>
-          <SkillList skills={this.props.profile.skills} selectedSkills={this.state.selectedSkills} handleClick={skill => this.handleSkillClick(skill)}></SkillList>
-        </Grid>
-        <Grid xs={4}>
-          {this.renderAchievements()}
-        </Grid>
-        <Grid xs={2}>
         </Grid>
       </Grid>
     );

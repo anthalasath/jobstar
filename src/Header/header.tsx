@@ -9,6 +9,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 export interface JobStarHeaderProps {
     handleJobStarClick: () => void
     handleAddAchievementClick: () => void
+    handleProfileClick: (profile: Profile) => void
     connectedProfiles: Profile[]
 }
 
@@ -25,7 +26,7 @@ export function JobStarHeader(props: JobStarHeaderProps) {
             </Button>
         </Grid>
         <Grid item xs={2}>
-            <Button>
+            <Button onClick={() => props.handleProfileClick(props.connectedProfiles[0])}>
                 <Avatar alt="avatar" src={props.connectedProfiles[0].imageUri} sx={{ height: 50, width: 50 }}></Avatar>
             </Button>
         </Grid>

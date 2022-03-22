@@ -31,7 +31,7 @@ class App extends React.Component<{}, AppState> {
     this.setState({ achievements: await getLatestAchievementsAll(null) });
   }
 
-  handleWorkerProfileClick(profile: Profile): void {
+  handleProfileClick(profile: Profile): void {
     this.setState({
       displayedProfile: profile
     });
@@ -54,7 +54,6 @@ class App extends React.Component<{}, AppState> {
         skills={["Javascript", "Solidity", "Marketing", "C#"]}
         workerProfiles={mockProfiles}
         achievements={this.state.achievements}
-        handleWorkerProfileClick={p => this.handleWorkerProfileClick(p)}
       ></Home>;
     }
   }
@@ -78,6 +77,7 @@ class App extends React.Component<{}, AppState> {
         connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
         handleJobStarClick={() => this.handleJobStarClick()}
         handleAddAchievementClick={() => this.handleAddAchievementClick()}
+        handleProfileClick={profile => this.handleProfileClick(profile)}
       ></JobStarHeader>
       {this.renderContentUnderHeader()}
     </Box>
