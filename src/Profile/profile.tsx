@@ -57,11 +57,11 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
 
   render() {
     return (
-      <Grid container>
-        <Grid xs={4}>
-        </Grid>
-        <Grid xs={4}>
-          <Stack spacing={5}>
+  
+          <Stack spacing={5}  sx={{
+            m:"10%",
+            mt:"0px"
+         }}>
             <ProfileSummary profile={this.props.profile}></ProfileSummary>
             <Button variant="outlined" sx={{ height: 50 }}>
               <h3>{getAchievementsCount(this.props.profile)} achievements</h3>
@@ -72,10 +72,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
               handleClick={skill => this.handleSkillClick(skill)}></SkillList>
             <AchievementList achievements={getLatestAchievements(this.props.profile, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null)}></AchievementList>
           </Stack>
-        </Grid>
-        <Grid xs={4}>
-        </Grid>
-      </Grid>
+        
     );
   }
 }

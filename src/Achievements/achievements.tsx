@@ -95,7 +95,7 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
     // TODO: https://github.com/mui/mui-x/issues/1040#issuecomment-780484281 for seeing full cell content
     return <Stack>
         <h3>Browse achievements</h3>
-        <div style={{ height: 300, width: '75%' }}>
+        <div style={{ height: 100, width: '75%' }}>
             <DataGrid rows={rows} columns={columns} />
         </div>
     </Stack>
@@ -115,7 +115,7 @@ export interface AchievementSummaryListProps {
 }
 
 export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.Element {
-    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
+    return <Paper style={{ maxHeight: 250, maxWidth: 500, overflow: "auto" }}>
         <List>
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())

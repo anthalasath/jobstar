@@ -30,7 +30,7 @@ export interface SkillListProps {
 
 export function SkillList(props: SkillListProps) {
     return <Grid container spacing={2}>
-        <Grid xs={12}><h3>Skills</h3></Grid>
+        <Grid xs={12}><h2>Skills</h2></Grid>
         {props.skills.map(skill => {
             return <Grid xs={4}>
                 <Button variant={props.selectedSkills.has(skill) ? "contained" : "outlined"} color="info" onClick={() => props.handleClick(skill)}>{skill}</Button>

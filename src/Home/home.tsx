@@ -38,34 +38,21 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
 
     render() {
-        return <Box>
-            <Grid container spacing={5}>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
-                    <LatestAchievementsView achievements={this.props.achievements}></LatestAchievementsView>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
+        return <Box
+            sx={{
+                m:"10%",
+                mt:"-50px"
+         }}>
+  
                     <SkillList
                         skills={this.props.skills}
                         selectedSkills={this.state.selectedSkills}
                         handleClick={skill => this.handleSkillClick(skill)}></SkillList>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
+             
                     <WorkerProfiles profiles={this.props.workerProfiles
                         .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}></WorkerProfiles>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-            </Grid>
+                    <LatestAchievementsView achievements={this.props.achievements}></LatestAchievementsView>
+         
         </Box>
     }
 }
@@ -77,7 +64,7 @@ interface WorkerProfilesProps {
 
 function WorkerProfiles(props: WorkerProfilesProps) {
     const columns = [
-        { field: "workers", headerName: "Workers", width: 150 },
+        { field: "workers", headerName: "Workers", width: 200 },
         { field: "achievements", headerName: "Achievements", width: 150 },
     ];
     const rows = props.profiles.map(p => {
@@ -87,7 +74,7 @@ function WorkerProfiles(props: WorkerProfilesProps) {
             achievements: getAchievementsCount(p)
         }
     });
-    return <div style={{ height: 300, width: '75%' }}>
+    return <div style={{ height: 300, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} />
     </div>
 }
