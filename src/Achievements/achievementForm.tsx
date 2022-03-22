@@ -66,10 +66,18 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                     <p>Issuer</p>
                     <p>{this.props.issuerAddress}</p>
                     <Divider></Divider>
-                    <Stack direction="row">
-                        <Button variant="contained" onClick={() => this.props.handleCancelClick()}>Cancel</Button>
-                        <Button variant="contained">Submit</Button>
-                    </Stack>
+                    <Grid container>
+                        <Grid xs={4}>
+                        </Grid>
+                        <Grid xs={4}>
+                            <Stack spacing={2}>
+                                <Button variant="contained" color="info">Submit</Button>
+                                <Button variant="contained" color="inherit" onClick={() => this.props.handleCancelClick()}>Cancel</Button>
+                            </Stack>
+                        </Grid>
+                        <Grid xs={4}>
+                        </Grid>
+                    </Grid>
                 </Stack>
             </Grid>
             <Grid xs={4}></Grid>
