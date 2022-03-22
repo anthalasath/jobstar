@@ -3,10 +3,13 @@ import { Skill, SkillList, toggleSkill } from "../Skills/skills";
 import { mockProfiles } from "./mockProfiles";
 import * as React from "react";
 import { AchievementList, getAchievementsCount, getLatestAchievements } from "../Achievements/achievements";
+import { khKH } from "@mui/material/locale";
+import { firstCharToUpper } from "../utils";
 
 export interface ProfileSummaryProps {
   profile: Profile
 }
+
 
 export function ProfileSummary(props: ProfileSummaryProps) {
   return <Stack>
@@ -14,7 +17,17 @@ export function ProfileSummary(props: ProfileSummaryProps) {
       <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 75, width: 75 }}></Avatar>
       <h2>{props.profile.handle}</h2>
     </Stack>
-    {props.profile.discordHandle ? <p>Discord: {props.profile.discordHandle}</p> : null}
+    {props.profile.socialMediaHandles ? <SocialMediaHandlesView handles={props.profile.socialMediaHandles}></SocialMediaHandlesView> : null}
+  </Stack>
+}
+
+export interface SocialMediaHandlesViewProps {
+  handles: SocialMediaHandles
+}
+
+export function SocialMediaHandlesView(props: SocialMediaHandlesViewProps) {
+  return <Stack>
+    {Object.keys(props.handles).map(k => props.handles[k] ? <p>{firstCharToUpper(k)}: {props.handles[k]}</p> : null)}
   </Stack>
 }
 
@@ -72,7 +85,14 @@ export interface Profile {
   handle: string,
   imageUri: string,
   skills: Skill[],
-  discordHandle: string | null
+  socialMediaHandles: SocialMediaHandles | null
+}
+
+export interface SocialMediaHandles {
+  [key: string]: string | null,
+  discord: string | null,
+  telegram: string | null
+  twitter: string | null
 }
 
 export async function getProfile(handle: string): Promise<Profile | undefined> {

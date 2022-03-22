@@ -7,7 +7,11 @@ export const mockProfiles: Profile[] = [
     {
         id: "1",
         handle: "Anthalasath",
-        discordHandle: "Anthalasath#0531",
+        socialMediaHandles: {
+            discord: "Anthalasath#0531",
+            twitter: "@Anthalasath",
+            telegram: null
+        },
         imageUri:
             "https://pbs.twimg.com/profile_images/1297158984730902528/5cGwqw-I_400x400.png",
         skills: [
@@ -65,7 +69,7 @@ export const mockProfiles: Profile[] = [
     {
         id: "2",
         handle: "Doge the Doge",
-        discordHandle: null,
+        socialMediaHandles: null,
         imageUri:
             "https://avatarfiles.alphacoders.com/165/thumb-165625.jpg",
         skills: [
@@ -94,7 +98,7 @@ export const mockProfiles: Profile[] = [
     {
         id: "3",
         handle: "John Smith",
-        discordHandle: null,
+        socialMediaHandles: null,
         imageUri:
             "https://images.pexels.com/photos/937481/pexels-photo-937481.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
         skills: [
