@@ -9,11 +9,11 @@ import { Home } from "./Home/home";
 import { Box, List } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
-import { ProfilePage } from "./Profile/profile";
+import { Profile, ProfilePage } from "./Profile/profile";
 
 interface AppState {
   achievements: Achievement[]
-  profileSearchQuery: string
+  displayedProfile: Profile | null
 }
 
 class App extends React.Component<{}, AppState> {
@@ -21,7 +21,7 @@ class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       achievements: [],
-      profileSearchQuery: "",
+      displayedProfile: null
     };
   }
 
@@ -29,19 +29,29 @@ class App extends React.Component<{}, AppState> {
     this.setState({ achievements: await getLatestAchievementsAll(null) });
   }
 
-  handleProfileSearchFieldChange(value: any): void {
-    this.setState({ profileSearchQuery: value });
+  handleWorkerProfileClick(profile: Profile): void {
+    this.setState({
+      displayedProfile: profile
+    });
+  }
+
+  renderContentUnderHeader(): JSX.Element {
+    if (this.state.displayedProfile) {
+      return <ProfilePage profile={this.state.displayedProfile}></ProfilePage>
+    } else {
+      return <Home
+        skills={["Javascript", "Solidity", "Marketing", "C#"]}
+        workerProfiles={mockProfiles}
+        achievements={this.state.achievements}
+        handleWorkerProfileClick={p => this.handleWorkerProfileClick(p)}
+      ></Home>;
+    }
   }
 
   render() {
     return <Box>
       <JobStarHeader></JobStarHeader>
-      <ProfilePage profile={mockProfiles[0]}></ProfilePage>
-      {/* <Home
-        skills={["Javascript", "Solidity", "Marketing", "C#"]}
-        workerProfiles={mockProfiles}
-        achievements={this.state.achievements}
-        handleProfileSearchFieldChange={value => this.handleProfileSearchFieldChange(value)}></Home> */}
+      {this.renderContentUnderHeader()}
     </Box>
   }
 }

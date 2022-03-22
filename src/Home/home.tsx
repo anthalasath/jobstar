@@ -18,7 +18,7 @@ export interface HomeProps {
     workerProfiles: Profile[]
     skills: string[]
     achievements: Achievement[],
-    handleProfileSearchFieldChange: (value: any) => void
+    handleWorkerProfileClick: (profile: Profile) => void
 }
 
 interface HomeState {
@@ -39,6 +39,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         });
     }
 
+
     render() {
         return <Box>
             <Grid container spacing={5}>
@@ -51,7 +52,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <Grid item xs={6}>
                     <WorkerProfiles profiles={this.props.workerProfiles
                         .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}
-                        handleClick={(p) => console.log(p.handle)}></WorkerProfiles>
+                        handleClick={(p) => this.props.handleWorkerProfileClick(p)}></WorkerProfiles>
                 </Grid>
                 <Grid item xs={6}>
                     <HomeSkillList
@@ -131,5 +132,5 @@ interface ProfileHandleViewProps {
 
 
 function ProfileHandle(props: ProfileHandleViewProps) {
-    return <Button variant="outlined" onClick={() => props.handleClick}>{props.profile.handle}</Button>
+    return <Button variant="outlined" onClick={() => props.handleClick()}>{props.profile.handle}</Button>
 }
