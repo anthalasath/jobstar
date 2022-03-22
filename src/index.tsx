@@ -11,6 +11,7 @@ import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePage } from "./Profile/profile";
 import { AchievementForm } from "./Achievements/achievementForm";
+import * as ethers from "ethers";
 
 interface AppState {
   achievements: Achievement[]
@@ -46,7 +47,7 @@ class App extends React.Component<{}, AppState> {
 
   renderContentUnderHeader(): JSX.Element {
     if (this.state.isAchievementFormOpen) {
-      return <AchievementForm handleCancelClick={() => this.handleAddAchievementCancelClick()}></AchievementForm>
+      return <AchievementForm issuerAddress={ethers.constants.AddressZero} handleCancelClick={() => this.handleAddAchievementCancelClick()}></AchievementForm>
     } else if (this.state.displayedProfile) {
       return <ProfilePage profile={this.state.displayedProfile}></ProfilePage>
     } else {

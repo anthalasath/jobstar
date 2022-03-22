@@ -1,9 +1,10 @@
-import { Button, Grid, Modal, Stack, TextField } from "@mui/material";
+import { Button, Divider, Grid, Modal, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
 
 export interface AchievementFormProps {
     handleCancelClick: () => void
+    issuerAddress: string
 }
 
 export interface AchievementFormState {
@@ -12,18 +13,6 @@ export interface AchievementFormState {
     skill: string
     tags: string[]
     worker: string
-}
-
-interface TextFieldWithLabelProps {
-    label: string,
-    handleChange: (value: string) => void
-}
-
-function TextFieldWithLabel(props: TextFieldWithLabelProps) {
-    return <Stack direction="row">
-        <p>{props.label}</p>
-        <TextField></TextField>
-    </Stack>
 }
 
 export class AchievementForm extends React.Component<AchievementFormProps, AchievementFormState> {
@@ -64,12 +53,19 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
         return <Grid container>
             <Grid xs={4}></Grid>
             <Grid xs={4}>
-                <Stack>
+                <Stack spacing={2}>
                     <Box><h3>Add an achievement</h3></Box>
-                    <TextFieldWithLabel label="Title" handleChange={this.handleTitleChange}></TextFieldWithLabel>
-                    <TextFieldWithLabel label="Description" handleChange={this.handleDescriptionChange}></TextFieldWithLabel>
-                    <TextFieldWithLabel label="Skill" handleChange={this.handleSkillChange}></TextFieldWithLabel>
-                    <TextFieldWithLabel label="Worker" handleChange={this.handleWorkerChange}></TextFieldWithLabel>
+                    <TextField label="Title" onChange={e => this.handleTitleChange(e.target.value)}></TextField>
+                    <Divider></Divider>
+                    <TextField label="Description" onChange={e => this.handleDescriptionChange(e.target.value)}></TextField>
+                    <Divider></Divider>
+                    <TextField label="Skill" onChange={e => this.handleSkillChange(e.target.value)}></TextField>
+                    <Divider></Divider>
+                    <TextField label="Worker" onChange={e => this.handleWorkerChange(e.target.value)}></TextField>
+                    <Divider></Divider>
+                    <p>Issuer</p>
+                    <p>{this.props.issuerAddress}</p>
+                    <Divider></Divider>
                     <Stack direction="row">
                         <Button variant="contained" onClick={() => this.props.handleCancelClick()}>Cancel</Button>
                         <Button variant="contained">Submit</Button>
