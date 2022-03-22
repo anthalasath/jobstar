@@ -1,12 +1,10 @@
-import { Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Checkbox, Button } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { ProfileSearchField } from "../ProfileSearchField/profileSearchField";
-import { Achievement, LatestAchievementsView } from "../Achievements/achievements";
-import { JobStarHeader } from "../Header/header";
-import { SkillList, toggleSkill } from "../Skills/skills";
+import { Achievement, LatestAchievementsView, getAchievementsCount } from "../Achievements/achievements";
+import { toggleSkill } from "../Skills/skills";
 import { Profile } from "../Profile/profile";
-import { mockProfiles } from "../Profile/mockProfiles";
 import * as React from "react";
+import { DataGrid } from '@mui/x-data-grid';
 
 function Welcome() {
     return <Box>
@@ -98,24 +96,18 @@ interface WorkerProfilesProps {
 }
 
 function WorkerProfiles(props: WorkerProfilesProps) {
-    return <Grid container spacing={1}>
-        <Grid item xs={12}>
-            <h3>Worker profile</h3>
-        </Grid>
-        {props.profiles.map(p => {
-            return <Grid item xs={6}>
-                <ProfileHandle profile={p} handleClick={() => props.handleClick(p)}></ProfileHandle>
-            </Grid>
-        })}
-    </Grid>
-}
-
-interface ProfileHandleViewProps {
-    profile: Profile
-    handleClick: () => void
-}
-
-
-function ProfileHandle(props: ProfileHandleViewProps) {
-    return <Button variant="outlined" onClick={() => props.handleClick()}>{props.profile.handle}</Button>
+    const columns = [
+        { field: "workers", headerName: "Workers", width: 150 },
+        { field: "achievements", headerName: "Achievements", width: 150 },
+    ];
+    const rows = props.profiles.map(p => {
+        return {
+            id: p.id,
+            workers: p.handle,
+            achievements: getAchievementsCount(p)
+        }
+    });
+    return <div style={{ height: 300, width: '75%' }}>
+        <DataGrid rows={rows} columns={columns} />
+    </div>
 }
