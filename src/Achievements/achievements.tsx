@@ -71,7 +71,7 @@ export function AchievementView(props: { achievement: Achievement }): JSX.Elemen
                 <Button variant="outlined">Job ???</Button>
             </Grid>
             <Grid xs={6}>
-                <Button variant="outlined">{props.achievement.project.teamDisplayName}</Button>
+                <Button variant="contained">{props.achievement.project.teamDisplayName}</Button>
             </Grid>
         </Grid>
     </ListItem>
