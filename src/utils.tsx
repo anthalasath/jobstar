@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import * as React from "react";
 
 export function formatDate(date: Date): string {
@@ -15,7 +16,10 @@ export interface NamedAddressViewProps {
 
 export function NamedAddressView(props: NamedAddressViewProps) {
     return <div>
-        <p>{props.name}</p>
-        <p>{props.address}</p>
+        <p><b>{props.name}:</b></p>
+        <Grid container>
+            <Grid xs={1}></Grid>
+            <Grid xs={11}><p>{props.address}</p></Grid>
+        </Grid>
     </div>
 }
