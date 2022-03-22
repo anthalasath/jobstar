@@ -1,33 +1,33 @@
-import { Button, Grid, Paper } from "@mui/material";
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Button, Grid, Paper, Avatar } from "@mui/material";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Profile } from "../Profile/profile";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export interface JobStarHeaderProps {
     handleJobStarClick: () => void
     handleAddAchievementClick: () => void
+    connectedProfiles: Profile[]
 }
 
 export function JobStarHeader(props: JobStarHeaderProps) {
     const header = <Grid container spacing={0}>
-        <Grid item xs={10}>
-            <Button variant="text" sx={{color: "black"}} onClick={props.handleJobStarClick}>
-                <h1>JobStars</h1>
+        <Grid item xs={8}>
+            <Button variant="text" sx={{ color: "black" }} onClick={props.handleJobStarClick}>
+                <h3>JobStars</h3>
             </Button>
         </Grid>
-        <Grid item xs={1}>
-            <SettingsIcon sx={{ fontSize: 30 }}></SettingsIcon>
+        <Grid item xs={2}>
+            <Button onClick={() => props.handleAddAchievementClick()}>
+                <AddCircleIcon sx={{ fontSize: 50 }} color="success"></AddCircleIcon>
+            </Button>
         </Grid>
-        <Grid item xs={1}>
-            <Button variant="outlined">Anthalasath</Button>
-        </Grid>
-        <Grid item xs={8}>
-            <p>Share love with jobs</p>
-        </Grid>
-        <Grid item xs={4}>
-            <Button variant="outlined" onClick={() => props.handleAddAchievementClick()}>Add an Achievement</Button>
+        <Grid item xs={2}>
+            <Button>
+                <Avatar alt="avatar" src={props.connectedProfiles[0].imageUri} sx={{ height: 50, width: 50 }}></Avatar>
+            </Button>
         </Grid>
     </Grid>
     return <CenteredPage element={header}></CenteredPage>

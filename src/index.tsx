@@ -75,6 +75,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return <Box>
       <JobStarHeader
+        connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
         handleJobStarClick={() => this.handleJobStarClick()}
         handleAddAchievementClick={() => this.handleAddAchievementClick()}
       ></JobStarHeader>

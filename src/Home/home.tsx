@@ -43,22 +43,31 @@ export class Home extends React.Component<HomeProps, HomeState> {
     render() {
         return <Box>
             <Grid container spacing={5}>
-                <Grid item xs={6}>
-                    <Welcome></Welcome>
+                <Grid item xs={4}>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <LatestAchievementsView achievements={this.props.achievements}></LatestAchievementsView>
                 </Grid>
-                <Grid item xs={6}>
-                    <WorkerProfiles profiles={this.props.workerProfiles
-                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}
-                        handleClick={(p) => this.props.handleWorkerProfileClick(p)}></WorkerProfiles>
+                <Grid item xs={4}>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                     <HomeSkillList
                         skills={this.props.skills}
                         selectedSkills={this.state.selectedSkills}
                         handleClick={skill => this.handleSkillClick(skill)}></HomeSkillList>
+                </Grid>
+                <Grid item xs={4}>
+                </Grid>
+                <Grid item xs={4}>
+                </Grid>
+                <Grid item xs={4}>
+                    <WorkerProfiles profiles={this.props.workerProfiles
+                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}
+                        handleClick={(p) => this.props.handleWorkerProfileClick(p)}></WorkerProfiles>
+                </Grid>
+                <Grid item xs={4}>
                 </Grid>
             </Grid>
         </Box>
@@ -72,39 +81,15 @@ interface HomeSkillListProps {
 }
 
 function HomeSkillList(props: HomeSkillListProps) {
-    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}><List>
-        {props.skills
-            .map(skill => <HomeSkillListItemView
-                key={skill}
-                isChecked={props.selectedSkills.has(skill)}
-                skill={skill}
-                handleClick={props.handleClick}></HomeSkillListItemView>)
-        }
-    </List>
-    </Paper>
-}
+    return <Grid container spacing={2}>
+        <Grid xs={12}><h3>Skills</h3></Grid>
+        {props.skills.map(skill => {
+            return <Grid xs={4}>
+                <Button variant={props.selectedSkills.has(skill) ? "contained" : "outlined"} color="info" onClick={() => props.handleClick(skill)}>{skill}</Button>
+            </Grid>
+        })}
 
-interface HomeSkillListItemViewProps {
-    skill: string,
-    isChecked: boolean,
-    handleClick: (skill: string) => void
-}
-
-function HomeSkillListItemView(props: HomeSkillListItemViewProps) {
-    return <ListItem>
-        <ListItemButton onClick={() => props.handleClick(props.skill)}>
-            <ListItemIcon>
-                <Checkbox
-                    edge="start"
-                    checked={props.isChecked}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': props.skill }}
-                />
-            </ListItemIcon>
-            <ListItemText primary={props.skill}></ListItemText>
-        </ListItemButton>
-    </ListItem>
+    </Grid>
 }
 
 interface WorkerProfilesProps {
