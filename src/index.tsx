@@ -59,12 +59,6 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
-  handleAddAchievementModalClose(): void {
-    this.setState({
-      isAddAchievementModalOpen: false
-    });
-  }
-
   handleAddAchievementClick(): void {
     this.setState({
       isAddAchievementModalOpen: true
