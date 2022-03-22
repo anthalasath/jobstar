@@ -20,7 +20,7 @@ export function JobStarHeader(props: JobStarHeaderProps) {
             <SettingsIcon sx={{ fontSize: 30 }}></SettingsIcon>
         </Grid>
         <Grid item xs={1}>
-            <Button variant="outlined">Connect</Button>
+            <Button variant="outlined">Anthalasath</Button>
         </Grid>
         <Grid item xs={8}>
             <p>Share love with jobs</p>
