@@ -48,9 +48,15 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
+  handleJobStarClick(): void {
+    this.setState({
+      displayedProfile: null
+    });
+  }
+
   render() {
     return <Box>
-      <JobStarHeader></JobStarHeader>
+      <JobStarHeader handleJobStarClick={() => this.handleJobStarClick()}></JobStarHeader>
       {this.renderContentUnderHeader()}
     </Box>
   }

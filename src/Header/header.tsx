@@ -4,16 +4,17 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Box } from "@mui/system";
 
 export interface JobStarHeaderProps {
-
+    handleJobStarClick: () => void
 }
 
 export function JobStarHeader(props: JobStarHeaderProps) {
     const header = <Grid container spacing={0}>
         <Grid item xs={10}>
-            <h1>JobStars</h1>
+            <Button variant="text" sx={{color: "black"}} onClick={props.handleJobStarClick}>
+                <h1>JobStars</h1>
+            </Button>
         </Grid>
         <Grid item xs={1}>
             <SettingsIcon sx={{ fontSize: 30 }}></SettingsIcon>
