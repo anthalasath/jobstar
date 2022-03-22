@@ -1,7 +1,6 @@
-# TODO:
-- Basic profile layout
-- Search by handle
-- Search by skills
-- Connect to lens (write contracts)
-- Update your profile
-- Award achievements
+# Setup
+
+1. npm install
+2. npm start -> this will open the site in the browser
+
+Right now all data is hardcoded
