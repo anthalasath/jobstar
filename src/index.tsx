@@ -18,6 +18,7 @@ import { AchievementConfirmationForm } from "./Achievements/achievementConfirmat
 import Navbar from "./_components/Navbar";
 import Footer from "./_components/Footer";
 import { createTheme } from "@mui/material/styles";
+import { LoginPage } from "./LoginPage/loginPage";
 
 interface AppState {
   achievements: Achievement[]
