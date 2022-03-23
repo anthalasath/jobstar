@@ -115,7 +115,9 @@ class App extends React.Component<{}, AppState> {
         handleCancelClick={() => this.handleAchievementFormCancelClick()}
       ></AchievementForm>
       case PageType.AchievementConfirmationForm:
-        return <AchievementConfirmationForm input={this.state.currentPage.input}></AchievementConfirmationForm>
+        return <AchievementConfirmationForm 
+        handleBackButtonClick={() => this.goToPrevPage()}
+        input={this.state.currentPage.input}></AchievementConfirmationForm>
       case PageType.Profile:
         return <ProfilePageView profile={this.state.currentPage.profile}></ProfilePageView>
     }

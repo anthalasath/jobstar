@@ -6,6 +6,7 @@ import { AddAchievementHeader } from "./addAchievementHeader";
 
 interface AchievementConfirmationFormProps {
     input: AchievementInput
+    handleBackButtonClick: () => void
 }
 
 export function AchievementConfirmationForm(props: AchievementConfirmationFormProps) {
@@ -15,6 +16,7 @@ export function AchievementConfirmationForm(props: AchievementConfirmationFormPr
             <Stack>
                 <AddAchievementHeader></AddAchievementHeader>
                 <SendAchievementConfirmation
+                    handleBackButtonClick={props.handleBackButtonClick}
                     workerProfileId={props.input.workerProfileId}
                     issuerProfileId={props.input.issuerProfileId}
                 ></SendAchievementConfirmation>
@@ -28,6 +30,7 @@ export function AchievementConfirmationForm(props: AchievementConfirmationFormPr
 interface SendAchievementConfirmationProps {
     workerProfileId: BigNumberish
     issuerProfileId: BigNumberish
+    handleBackButtonClick: () => void
 }
 
 function SendAchievementConfirmation(props: SendAchievementConfirmationProps) {
@@ -36,7 +39,7 @@ function SendAchievementConfirmation(props: SendAchievementConfirmationProps) {
         <ProfileIdWithRoleView role="Issuer" profileId={props.issuerProfileId}></ProfileIdWithRoleView>
         <ProfileIdWithRoleView role="Worker" profileId={props.workerProfileId}></ProfileIdWithRoleView>
         <Stack direction="row" spacing={4}>
-            <Button variant="contained" color="inherit">Back</Button>
+            <Button variant="contained" color="inherit" onClick={props.handleBackButtonClick}>Back</Button>
             <Button variant="contained" color="info">Submit</Button>
         </Stack>
     </Paper>

@@ -79,7 +79,6 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
 
 // TODO: Profile handles
 export function AchievementInputView(props: { achievement: AchievementInput }): JSX.Element {
-    console.log(JSON.stringify(mockProfiles, null, 1))
     return <Stack>
         <p>{props.achievement.title}</p>
         <SkillList skills={[props.achievement.skill]} selectedSkills={new Set<string>()} handleClick={() => { }}></SkillList>
