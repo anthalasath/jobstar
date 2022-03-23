@@ -17,7 +17,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { APP_TITLE } from "../constants";
-import "@fontsource/podkova/400.css";
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 
 //import { routes } from "../_components/Routes";
