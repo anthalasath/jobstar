@@ -7,7 +7,7 @@ import { mockProfiles } from "../Profile/mockProfiles";
 import { Circle } from '@mui/icons-material';
 import { DataGrid } from "@mui/x-data-grid";
 import { SkillList } from "../Skills/skills";
-import { BigNumberish } from "ethers";
+import { BigNumber } from "ethers";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -16,8 +16,8 @@ export interface AchievementInput {
     skill: string,
     title: string
     description: string,
-    issuerProfileId: BigNumberish
-    workerProfileId: BigNumberish
+    issuerProfileId: BigNumber
+    workerProfileId: BigNumber
     dateOfDelivery: Date,
     imageUri: string | null
 }
@@ -77,15 +77,19 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
     </Stack>
 }
 
-// TODO: Profile handles
 export function AchievementInputView(props: { achievement: AchievementInput }): JSX.Element {
+    const getHandle = (profileId: BigNumber) => {
+        return mockProfiles.find(p => p.id.eq(profileId))?.handle ?? "Unknown";
+    };
+    const workerHandle = getHandle(props.achievement.workerProfileId);
+    const issuerHandle = getHandle(props.achievement.issuerProfileId);
     return <Stack>
         <p>{props.achievement.title}</p>
         <SkillList skills={[props.achievement.skill]} selectedSkills={new Set<string>()} handleClick={() => { }}></SkillList>
         {props.achievement.imageUri ? <Avatar variant="square" src={props.achievement.imageUri} /> : null}
         <p>{props.achievement.description}</p>
-        <ProfileWithRoleView role="Worker" name={"Worker profile handle"} profileId={props.achievement.workerProfileId}></ProfileWithRoleView>
-        <ProfileWithRoleView role="Issuer" name={"Issuer profile handle"} profileId={props.achievement.issuerProfileId}></ProfileWithRoleView>
+        <ProfileWithRoleView role="Worker" name={workerHandle} profileId={props.achievement.workerProfileId}></ProfileWithRoleView>
+        <ProfileWithRoleView role="Issuer" name={issuerHandle} profileId={props.achievement.issuerProfileId}></ProfileWithRoleView>
     </Stack>
 }
 

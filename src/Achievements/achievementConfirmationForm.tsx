@@ -1,5 +1,5 @@
 import { Button, Grid, Paper, Stack } from "@mui/material";
-import { BigNumberish } from "ethers";
+import { BigNumber } from "ethers";
 import { ProfileIdWithRoleView } from "../utils";
 import { AchievementInput, AchievementInputView } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
@@ -28,8 +28,8 @@ export function AchievementConfirmationForm(props: AchievementConfirmationFormPr
 }
 
 interface SendAchievementConfirmationProps {
-    workerProfileId: BigNumberish
-    issuerProfileId: BigNumberish
+    workerProfileId: BigNumber
+    issuerProfileId: BigNumber
     handleBackButtonClick: () => void
 }
 

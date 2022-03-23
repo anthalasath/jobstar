@@ -1,6 +1,6 @@
 import { Button, Divider, Grid, Modal, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { BigNumberish } from "ethers";
+import { BigNumber } from "ethers";
 import * as React from "react";
 import { ProfileIdWithRoleView } from "../utils";
 import { AchievementInput } from "./achievements";
@@ -9,7 +9,7 @@ import { AddAchievementHeader } from "./addAchievementHeader";
 export interface AchievementFormProps {
     handleSubmitClick: (input: AchievementInput) => void
     handleCancelClick: () => void
-    issuerProfileId: BigNumberish
+    issuerProfileId: BigNumber
 }
 
 export interface AchievementFormState {
@@ -17,7 +17,7 @@ export interface AchievementFormState {
     description: string
     skill: string
     tags: string[]
-    worker: string
+    workerProfileId: BigNumber
 }
 
 export class AchievementForm extends React.Component<AchievementFormProps, AchievementFormState> {
@@ -29,7 +29,7 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
             description: "",
             skill: "",
             tags: [],
-            worker: "",
+            workerProfileId: BigNumber.from(0),
         };
     }
 
@@ -48,9 +48,9 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
             skill
         });
     }
-    handleWorkerChange(worker: string): void {
+    handleWorkerChange(worker: BigNumber): void {
         this.setState({
-            worker
+            workerProfileId: BigNumber.from(0)
         });
     }
 
@@ -66,7 +66,7 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                     <Divider></Divider>
                     <TextField label="Skill" onChange={e => this.handleSkillChange(e.target.value)}></TextField>
                     <Divider></Divider>
-                    <TextField label="Worker" onChange={e => this.handleWorkerChange(e.target.value)}></TextField>
+                    <TextField label="Worker" onChange={e => this.handleWorkerChange(BigNumber.from(e.target.value))}></TextField>
                     <Divider></Divider>
                     <ProfileIdWithRoleView role="Issuer" profileId={this.props.issuerProfileId}></ProfileIdWithRoleView>
                     <Divider></Divider>
@@ -77,7 +77,7 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                             <Stack spacing={2}>
                                 <Button variant="contained" color="info" onClick={() => this.props.handleSubmitClick({
                                     issuerProfileId: this.props.issuerProfileId,
-                                    workerProfileId: this.state.worker,
+                                    workerProfileId: this.state.workerProfileId,
                                     description: this.state.description,
                                     skill: this.state.skill,
                                     title: this.state.title,

@@ -1,5 +1,5 @@
 import { Chip, Grid } from "@mui/material";
-import { BigNumberish } from "ethers";
+import { BigNumber } from "ethers";
 import * as React from "react";
 
 export function formatDate(date: Date): string {
@@ -12,11 +12,11 @@ export function firstCharToUpper(s: string): string {
 
 export interface ProfileIdWithRoleViewProps {
     role: string
-    profileId: BigNumberish
+    profileId: BigNumber
 }
 
 export function ProfileIdWithRoleView(props: ProfileIdWithRoleViewProps) {
-    return  <p><b>{props.role}: {props.profileId}</b></p>
+    return  <p><b>{props.role}: {props.profileId.toString()}</b></p>
 }
 
 export interface ProfileWithRoleViewProps extends ProfileIdWithRoleViewProps {

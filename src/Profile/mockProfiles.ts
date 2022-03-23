@@ -1,10 +1,10 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { MockAchievementFactory } from "../Achievements/mockAchievementFactory";
 import { Profile } from "./profile";
 
 export const mockProfiles: Profile[] = [
     {
-        id: "1",
+        id: BigNumber.from(1),
         handle: "Anthalasath",
         socialMediaHandles: {
             discord: "Anthalasath#0531",
@@ -37,8 +37,8 @@ export const mockProfiles: Profile[] = [
                         description: "Audited smart contracts",
                         dateOfDelivery: new Date(Date.parse("31 May 2018")),
                         title: "Generalist Programmer",
-                        issuerProfileId: 1,
-                        workerProfileId: 1,
+                        issuerProfileId: BigNumber.from(1),
+                        workerProfileId: BigNumber.from(1),
                         imageUri: null
                     })
                 ]
@@ -47,7 +47,7 @@ export const mockProfiles: Profile[] = [
         ]
     },
     {
-        id: "2",
+        id: BigNumber.from(2),
         handle: "Doge the Doge",
         socialMediaHandles: null,
         imageUri:
@@ -62,8 +62,8 @@ export const mockProfiles: Profile[] = [
                         description: "being the best",
                         imageUri: "https://static.wikia.nocookie.net/d17a9654-4ee8-44cf-baf1-98d7eaa96ed8/scale-to-width/755",
                         dateOfDelivery: new Date(Date.parse("31 February 2022")),
-                        issuerProfileId: 1,
-                        workerProfileId: 1,
+                        issuerProfileId: BigNumber.from(1),
+                        workerProfileId: BigNumber.from(1),
                     })
                 ]
             },
@@ -71,7 +71,7 @@ export const mockProfiles: Profile[] = [
         ]
     },
     {
-        id: "3",
+        id: BigNumber.from(3),
         handle: "John Smith",
         socialMediaHandles: null,
         imageUri:
@@ -86,8 +86,8 @@ export const mockProfiles: Profile[] = [
                         description: "Writing smart contracts",
                         imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Ethereum_logo_translucent.svg/800px-Ethereum_logo_translucent.svg.png",
                         dateOfDelivery: new Date(Date.parse("17 February 2022")),
-                        issuerProfileId: 1,
-                        workerProfileId: 1,
+                        issuerProfileId: BigNumber.from(1),
+                        workerProfileId: BigNumber.from(1),
                     })
                 ]
             }
