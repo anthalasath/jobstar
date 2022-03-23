@@ -6,13 +6,18 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Achievement, AchievementInput, getLatestAchievementsAll } from "./Achievements/achievements";
 import { Home } from "./Home/home";
-import { Box, List } from "@mui/material";
+import { Box, CssBaseline, List, ThemeProvider } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
 import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePageView } from "./Profile/profile";
 import { AchievementForm } from "./Achievements/achievementForm";
 import * as ethers from "ethers";
 import { AchievementConfirmationForm } from "./Achievements/achievementConfirmationForm";
+
+/*styling*/
+import Navbar from "./_components/Navbar";
+import Footer from "./_components/Footer";
+import { createTheme } from "@mui/material/styles";
 
 interface AppState {
   achievements: Achievement[]
@@ -117,15 +122,36 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
-    return <Box>
-      <JobStarHeader
-        connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
-        handleJobStarClick={() => this.handleJobStarClick()}
-        handleAddAchievementClick={() => this.handleAddAchievementClick()}
-        handleProfileClick={profile => this.handleProfileClick(profile)}
-      ></JobStarHeader>
-      {this.renderContentUnderHeader()}
-    </Box>
+    const theme = createTheme({
+      palette: {
+          primary: {
+              light: '#63b8ff',
+              main: '#0989e3',
+              dark: '#005db0',
+              contrastText: '#000',
+          },
+          secondary: {
+              main: '#4db6ac',
+              light: '#82e9de',
+              dark: '#00867d',
+              contrastText: '#000',
+          },
+        },
+    });
+    return ( <ThemeProvider theme={theme}>
+      <CssBaseline />
+        <Box>
+          <Navbar />
+            <JobStarHeader
+              connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
+              handleJobStarClick={() => this.handleJobStarClick()}
+              handleAddAchievementClick={() => this.handleAddAchievementClick()}
+              handleProfileClick={profile => this.handleProfileClick(profile)}
+            ></JobStarHeader>
+            {this.renderContentUnderHeader()}
+          <Footer />
+      </Box>
+    </ThemeProvider>)
   }
 }
 
