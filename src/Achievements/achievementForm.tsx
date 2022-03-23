@@ -48,9 +48,9 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
             skill
         });
     }
-    handleWorkerChange(worker: BigNumber): void {
+    handleWorkerChange(workerProfileId: BigNumber): void {
         this.setState({
-            workerProfileId: BigNumber.from(0)
+            workerProfileId: workerProfileId
         });
     }
 
