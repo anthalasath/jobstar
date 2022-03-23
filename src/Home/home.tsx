@@ -39,7 +39,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
     render() {
         return <Box>
-            <Grid container spacing={5}>
+            <Grid container spacing={2}>
+                {/*
+                 */}
                 <Grid item xs={4}>
                 </Grid>
                 <Grid item xs={4}>
@@ -47,6 +49,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 </Grid>
                 <Grid item xs={4}>
                 </Grid>
+
                 <Grid item xs={4}>
                 </Grid>
                 <Grid item xs={4}>
@@ -54,12 +57,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         skills={this.props.skills}
                         selectedSkills={this.state.selectedSkills}
                         handleClick={skill => this.handleSkillClick(skill)}></SkillList>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
-                </Grid>
-                <Grid item xs={4}>
                     <WorkerProfiles profiles={this.props.workerProfiles
                         .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}></WorkerProfiles>
                 </Grid>
@@ -87,7 +84,7 @@ function WorkerProfiles(props: WorkerProfilesProps) {
             achievements: getAchievementsCount(p)
         }
     });
-    return <div style={{ height: 300, width: '75%' }}>
+    return <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} />
     </div>
 }

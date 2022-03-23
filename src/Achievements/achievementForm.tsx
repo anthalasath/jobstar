@@ -93,7 +93,9 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                 </Stack>
             </Grid>
             <Grid xs={4}></Grid>
+            <hr />
         </Grid>
+
     }
 }
 

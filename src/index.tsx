@@ -137,6 +137,9 @@ class App extends React.Component<{}, AppState> {
               contrastText: '#000',
           },
         },
+        typography: {
+          fontSize: 12,
+          },
     });
     return ( <ThemeProvider theme={theme}>
       <CssBaseline />

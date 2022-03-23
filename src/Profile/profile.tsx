@@ -28,7 +28,7 @@ export interface SocialMediaHandlesViewProps {
 
 export function SocialMediaHandlesView(props: SocialMediaHandlesViewProps) {
   return <Stack>
-    {Object.keys(props.handles).map(k => props.handles[k] ? <p>{firstCharToUpper(k)}: {props.handles[k]}</p> : null)}
+    {Object.keys(props.handles).map(k => props.handles[k] ? <span>{firstCharToUpper(k)}: {props.handles[k]}</span> : null)}
   </Stack>
 }
 

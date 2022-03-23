@@ -58,18 +58,20 @@ export interface AchievementListProps {
 
 export function AchievementList(props: AchievementListProps): JSX.Element {
     const columns = [
-        { field: "achievements", headerName: "Achievements", width: 150 },
+        { field: "achievements", headerName: "Achievements", width: 200 },
+        { field: "date", headerName: "Date", width: 200 }
     ];
     const rows = props.achievements.map(a => {
         return {
             id: a.id,
-            achievements: a.description
+            achievements: a.description,
+            date: formatDate(a.dateOfDelivery)            
         }
     });
     // TODO: https://github.com/mui/mui-x/issues/1040#issuecomment-780484281 for seeing full cell content
     return <Stack>
         <h3>Browse achievements</h3>
-        <div style={{ height: 300, width: '75%' }}>
+        <div style={{ height: 300, width: '100%' }}>
             <DataGrid rows={rows} columns={columns} />
         </div>
     </Stack>
@@ -102,7 +104,7 @@ export interface AchievementSummaryListProps {
 }
 
 export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.Element {
-    return <Paper style={{ maxHeight: 400, maxWidth: 400, overflow: "auto" }}>
+    return <Paper style={{ maxHeight: 250, maxWidth: 600, overflow: "auto" }}>
         <List>
             {props.achievements
                 .sort(achievement => achievement.dateOfDelivery.getTime())
@@ -117,7 +119,9 @@ export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.
 
 export function LatestAchievementsView(props: { achievements: Achievement[] }): JSX.Element {
     return <Stack>
-        <h2>Latest achievements</h2>
-        <AchievementSummaryList achievements={props.achievements}></AchievementSummaryList>
+        <Grid container spacing={2}>
+            <Grid xs={12}><h2>Latest achievements</h2></Grid>
+            <AchievementSummaryList achievements={props.achievements}></AchievementSummaryList>
+        </Grid>
     </Stack>
 }
