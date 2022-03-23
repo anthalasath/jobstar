@@ -49,6 +49,8 @@ const Navbar: FC = (profile): ReactElement => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          </Box>
           <Typography
             variant="h6"
             noWrap
@@ -62,8 +64,11 @@ const Navbar: FC = (profile): ReactElement => {
                 </Button>
 
           </Typography>
+
+         
+
+
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-        
           </Box>
           <Typography
             variant="h6"
@@ -72,21 +77,8 @@ const Navbar: FC = (profile): ReactElement => {
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
             <Button variant="text" sx={{ color: "white", fontFamily: 'podkova' }}>
-                <WorkspacePremiumIcon /> <h1>{APP_TITLE}</h1>
+                <WorkspacePremiumIcon /> <h2>{APP_TITLE}</h2>
             </Button>
-
-             {/** 
-              <Box sx={{ mx: "right", width: '50%' }}>
-                <Button>
-                   <AddCircleIcon sx={{ fontSize: 50 }} color="success"></AddCircleIcon>
-                </Button>
-                <Button>
-                    <Avatar alt="avatar" sx={{ height: 40, width: 40 }}></Avatar>
-                </Button>
-           </Box>
-              **/}   
-            
-
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Box
@@ -94,7 +86,7 @@ const Navbar: FC = (profile): ReactElement => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                alignItems: "center",
+               
                 marginLeft: "1rem",
               }}
             >
