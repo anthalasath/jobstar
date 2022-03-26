@@ -20,10 +20,12 @@ import Footer from "./_components/Footer";
 import { createTheme } from "@mui/material/styles";
 import { LoginPage } from "./LoginPage/loginPage";
 
+
 interface AppState {
   achievements: Achievement[]
   currentPage: Page
   prevPage: Page
+  signer?: ethers.ethers.providers.JsonRpcSigner
 }
 
 enum PageType {
@@ -101,6 +103,10 @@ class App extends React.Component<{}, AppState> {
     })
   }
 
+  handleProviderConnected(signer: ethers.ethers.providers.JsonRpcSigner) {
+    this.setState({ signer: signer });
+  }
+
   renderContentUnderHeader(): JSX.Element {
     switch (this.state.currentPage.type) {
       case PageType.Home:
@@ -110,15 +116,15 @@ class App extends React.Component<{}, AppState> {
           achievements={this.state.achievements}
         ></Home>;
       case PageType.AchievementForm:
-        return <AchievementForm 
-        issuerProfileId={ethers.BigNumber.from(1)} 
-        handleSubmitClick={input => this.handleAchievementFormSubmitClick(input)}
-        handleCancelClick={() => this.handleAchievementFormCancelClick()}
-      ></AchievementForm>
+        return <AchievementForm
+          issuerProfileId={ethers.BigNumber.from(1)}
+          handleSubmitClick={input => this.handleAchievementFormSubmitClick(input)}
+          handleCancelClick={() => this.handleAchievementFormCancelClick()}
+        ></AchievementForm>
       case PageType.AchievementConfirmationForm:
-        return <AchievementConfirmationForm 
-        handleBackButtonClick={() => this.goToPrevPage()}
-        input={this.state.currentPage.input}></AchievementConfirmationForm>
+        return <AchievementConfirmationForm
+          handleBackButtonClick={() => this.goToPrevPage()}
+          input={this.state.currentPage.input}></AchievementConfirmationForm>
       case PageType.Profile:
         return <ProfilePageView profile={this.state.currentPage.profile}></ProfilePageView>
     }
@@ -127,37 +133,39 @@ class App extends React.Component<{}, AppState> {
   render() {
     const theme = createTheme({
       palette: {
-          primary: {
-              light: '#63b8ff',
-              main: '#0989e3',
-              dark: '#005db0',
-              contrastText: '#000',
-          },
-          secondary: {
-              main: '#4db6ac',
-              light: '#82e9de',
-              dark: '#00867d',
-              contrastText: '#000',
-          },
+        primary: {
+          light: '#63b8ff',
+          main: '#0989e3',
+          dark: '#005db0',
+          contrastText: '#000',
         },
-        typography: {
-          fontSize: 12,
-          },
+        secondary: {
+          main: '#4db6ac',
+          light: '#82e9de',
+          dark: '#00867d',
+          contrastText: '#000',
+        },
+      },
+      typography: {
+        fontSize: 12,
+      },
     });
-    return ( <ThemeProvider theme={theme}>
+    return (<ThemeProvider theme={theme}>
       <CssBaseline />
-        <Box>
-          <Navbar />
-            <JobStarHeader
-              connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
-              handleJobStarClick={() => this.handleJobStarClick()}
-              handleAddAchievementClick={() => this.handleAddAchievementClick()}
-              handleProfileClick={profile => this.handleProfileClick(profile)}
-            ></JobStarHeader>
-            {this.renderContentUnderHeader()}
-          <Footer />
+      <Box>
+        <Navbar />
+        <JobStarHeader
+          signer={this.state.signer}
+          handleProviderConnected={signer => this.handleProviderConnected(signer)}
+          connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
+          handleJobStarClick={() => this.handleJobStarClick()}
+          handleAddAchievementClick={() => this.handleAddAchievementClick()}
+          handleProfileClick={profile => this.handleProfileClick(profile)}
+        ></JobStarHeader>
+        {this.renderContentUnderHeader()}
+        <Footer />
       </Box>
-    </ThemeProvider>)
+    </ThemeProvider >)
   }
 }
 
