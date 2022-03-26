@@ -9,6 +9,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import * as ethers from "ethers";
 import { connectProvider } from "../utils";
+import metamaskIcon from "../metamask.png";
 
 export interface JobStarHeaderProps {
     handleJobStarClick: () => void
@@ -23,9 +24,15 @@ export class JobStarHeader extends React.Component<JobStarHeaderProps, {}> {
 
     renderAvatar() {
         if (this.props.signer) {
-            return <Button onClick={() => this.props.handleProfileClick(this.props.connectedProfiles[0])}>
-                <Avatar alt="avatar" src={this.props.connectedProfiles[0].imageUri} sx={{ height: 50, width: 50 }}></Avatar>
-            </Button>
+            if (this.props.connectedProfiles.length > 0) {
+                return <Button onClick={() => this.props.handleProfileClick(this.props.connectedProfiles[0])}>
+                    <Avatar alt="avatar" src={this.props.connectedProfiles[0].imageUri} sx={{ height: 50, width: 50 }}></Avatar>
+                </Button>
+            } else {
+                return <Button onClick={() => {}}>
+                    <Avatar alt="avatar" src="https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png" sx={{ height: 50, width: 50 }}></Avatar>
+                </Button>
+            }
         } else {
             return <ConnectProviderButton handleConnected={this.props.handleProviderConnected}></ConnectProviderButton>
         }

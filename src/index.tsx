@@ -157,12 +157,12 @@ class App extends React.Component<{}, AppState> {
         <JobStarHeader
           signer={this.state.signer}
           handleProviderConnected={signer => this.handleProviderConnected(signer)}
-          connectedProfiles={mockProfiles.filter(p => p.handle === "Anthalasath")}
+          connectedProfiles={[]}
           handleJobStarClick={() => this.handleJobStarClick()}
           handleAddAchievementClick={() => this.handleAddAchievementClick()}
           handleProfileClick={profile => this.handleProfileClick(profile)}
         ></JobStarHeader>
-        {this.renderContentUnderHeader()}
+        {this.renderContentUnderHeader()} 
         <Footer />
       </Box>
     </ThemeProvider >)
