@@ -8,7 +8,6 @@ import { Achievement, AchievementInput, getLatestAchievementsAll } from "./Achie
 import { Home } from "./Home/home";
 import { Box, CssBaseline, List, ThemeProvider } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
-import { mockProfiles } from "./Profile/mockProfiles";
 import { Profile, ProfilePageView } from "./Profile/profile";
 import { AchievementForm } from "./Achievements/achievementForm";
 import * as ethers from "ethers";
@@ -112,7 +111,7 @@ class App extends React.Component<{}, AppState> {
       case PageType.Home:
         return <Home
           skills={["Javascript", "Solidity", "Marketing", "C#"]}
-          workerProfiles={mockProfiles}
+          workerProfiles={[]}
           achievements={this.state.achievements}
         ></Home>;
       case PageType.AchievementForm:

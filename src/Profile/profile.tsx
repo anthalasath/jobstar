@@ -1,8 +1,7 @@
 import { Avatar, Box, Button, Card, Grid, Paper, Stack } from "@mui/material";
 import { Skill, SkillList, toggleSkill } from "../Skills/skills";
-import { mockProfiles } from "./mockProfiles";
 import * as React from "react";
-import { AchievementList, getAchievementsCount, getLatestAchievements } from "../Achievements/achievements";
+import { Achievement, AchievementList, getAchievementsCount, getLatestAchievements } from "../Achievements/achievements";
 import { khKH } from "@mui/material/locale";
 import { firstCharToUpper } from "../utils";
 import { BigNumber, BigNumberish } from "ethers";
@@ -38,6 +37,7 @@ export interface ProfilePageProps {
 
 interface ProfilePageState {
   selectedSkills: Set<string>
+  achievements: Achievement[]
 }
 
 
@@ -46,8 +46,14 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
   constructor(props: ProfilePageProps) {
     super(props);
     this.state = {
-      selectedSkills: new Set<string>()
+      selectedSkills: new Set<string>(),
+      achievements: []
     };
+  }
+
+  async componentDidMount(): Promise<void> {
+    const achievements = await getLatestAchievements(this.props.profile.id, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null);
+    this.setState({ achievements });
   }
 
   handleSkillClick(skill: string): void {
@@ -65,13 +71,13 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
           <Stack spacing={5}>
             <ProfileSummary profile={this.props.profile}></ProfileSummary>
             <Button variant="outlined" sx={{ height: 50 }}>
-              <h3>{getAchievementsCount(this.props.profile)} achievements</h3>
+              <h3>{getAchievementsCount(this.props.profile.id)} achievements</h3>
             </Button>
             <SkillList
               skills={this.props.profile.skills.map(s => s.name)}
               selectedSkills={this.state.selectedSkills}
               handleClick={skill => this.handleSkillClick(skill)}></SkillList>
-            <AchievementList achievements={getLatestAchievements(this.props.profile, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null)}></AchievementList>
+            <AchievementList achievements={this.state.achievements}></AchievementList>
           </Stack>
         </Grid>
         <Grid xs={4}>
@@ -97,5 +103,5 @@ export interface SocialMediaHandles {
 }
 
 export async function getProfile(handle: string): Promise<Profile | undefined> {
-  return mockProfiles.find((p) => p.handle === handle);
+  return undefined;
 }

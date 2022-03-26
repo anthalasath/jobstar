@@ -1,12 +1,10 @@
 import { Checkbox, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button } from "@mui/material"
 import { Achievement } from "../Achievements/achievements"
 import * as React from "react";
-import { mockProfiles } from "../Profile/mockProfiles";
 import { Profile } from "../Profile/profile";
 
 export interface Skill {
     name: string,
-    achievements: Achievement[] // TODO: make it so that skills dont know about achievements, only achievmeents about skill architecture-wise
 }
 
 export interface SkillListProps {
@@ -31,7 +29,7 @@ export function SkillList(props: SkillListProps) {
 }
 
 export async function getProfilesWithSkill(skill: string): Promise<Profile[]> {
-    return mockProfiles.filter(p => p.skills.some(s => s.name === skill));
+    return []
 }
 
 export function toggleSkill(skill: string, selectedSkills: Set<string>): Set<string> {

@@ -3,11 +3,10 @@ import { flatten } from "lodash"
 import { Profile } from "../Profile/profile";
 import { formatDate, ProfileWithRoleView } from "../utils";
 import * as React from "react";
-import { mockProfiles } from "../Profile/mockProfiles";
 import { Circle } from '@mui/icons-material';
 import { DataGrid } from "@mui/x-data-grid";
 import { SkillList } from "../Skills/skills";
-import { BigNumber } from "ethers";
+import * as ethers from "ethers";
 
 const placeholderAvatar = ""; // TODO FIX using image
 
@@ -16,8 +15,8 @@ export interface AchievementInput {
     skill: string,
     title: string
     description: string,
-    issuerProfileId: BigNumber
-    workerProfileId: BigNumber
+    issuerProfileId: ethers.BigNumber
+    workerProfileId: ethers.BigNumber
     dateOfDelivery: Date,
     imageUri: string | null
 }
@@ -27,24 +26,15 @@ export interface Achievement extends AchievementInput {
 }
 
 export async function getLatestAchievementsAll(skills: Set<string> | null): Promise<Achievement[]> {
-    return flatten(mockProfiles
-        .map(p => getLatestAchievements(p, skills)))
-        ;
+    return [];
 }
 
-export function getAchievementsCount(profile: Profile): number {
-    const achievements: Achievement[] = flatten(
-        profile.skills
-            .map(skill => skill.achievements));
-    return achievements.length;
+export async function getAchievementsCount(profileId: ethers.BigNumber): Promise<ethers.BigNumber> {
+    return ethers.BigNumber.from(0);
 }
 
-export function getLatestAchievements(profile: Profile, skills: Set<string> | null): Achievement[] {
-    const achievements: Achievement[] = flatten(
-        profile.skills
-            .filter(skill => skills === null || skills.has(skill.name))
-            .map(skill => skill.achievements));
-    return achievements.sort(a => a.dateOfDelivery.getTime());
+export async function getLatestAchievements(profile: ethers.BigNumber, skills: Set<string> | null): Promise<Achievement[]> {
+    return [];
 }
 
 
@@ -65,7 +55,7 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
         return {
             id: a.id,
             achievements: a.description,
-            date: formatDate(a.dateOfDelivery)            
+            date: formatDate(a.dateOfDelivery)
         }
     });
     // TODO: https://github.com/mui/mui-x/issues/1040#issuecomment-780484281 for seeing full cell content
@@ -77,20 +67,40 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
     </Stack>
 }
 
-export function AchievementInputView(props: { achievement: AchievementInput }): JSX.Element {
-    const getHandle = (profileId: BigNumber) => {
-        return mockProfiles.find(p => p.id.eq(profileId))?.handle ?? "Unknown";
-    };
-    const workerHandle = getHandle(props.achievement.workerProfileId);
-    const issuerHandle = getHandle(props.achievement.issuerProfileId);
-    return <Stack>
-        <p>{props.achievement.title}</p>
-        <SkillList skills={[props.achievement.skill]} selectedSkills={new Set<string>()} handleClick={() => { }}></SkillList>
-        {props.achievement.imageUri ? <Avatar variant="square" src={props.achievement.imageUri} /> : null}
-        <p>{props.achievement.description}</p>
-        <ProfileWithRoleView role="Worker" name={workerHandle} profileId={props.achievement.workerProfileId}></ProfileWithRoleView>
-        <ProfileWithRoleView role="Issuer" name={issuerHandle} profileId={props.achievement.issuerProfileId}></ProfileWithRoleView>
-    </Stack>
+interface AchievementInputViewState {
+    workerHandle: string
+    issuerHandle: string
+}
+
+export class AchievementInputView extends React.Component<{ achievement: AchievementInput }, AchievementInputViewState> {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            workerHandle: "Unknown",
+            issuerHandle: "Unknown"
+        };
+    }
+
+    async componentDidMount(): Promise<void> {
+        const getHandle = async (profileId: ethers.BigNumber) => {
+            return "Unknown";
+        };
+        const workerHandle = await getHandle(this.props.achievement.workerProfileId);
+        const issuerHandle = await getHandle(this.props.achievement.issuerProfileId);
+        this.setState({ workerHandle, issuerHandle });
+    }
+
+    render() {
+        return <Stack>
+            <p>{this.props.achievement.title}</p>
+            <SkillList skills={[this.props.achievement.skill]} selectedSkills={new Set<string>()} handleClick={() => { }}></SkillList>
+            {this.props.achievement.imageUri ? <Avatar variant="square" src={this.props.achievement.imageUri} /> : null}
+            <p>{this.props.achievement.description}</p>
+            <ProfileWithRoleView role="Worker" name={this.state.workerHandle} profileId={this.props.achievement.workerProfileId}></ProfileWithRoleView>
+            <ProfileWithRoleView role="Issuer" name={this.state.issuerHandle} profileId={this.props.achievement.issuerProfileId}></ProfileWithRoleView>
+        </Stack>
+    }
 }
 
 function AchievementSummaryView(props: { achievement: Achievement }): JSX.Element {
