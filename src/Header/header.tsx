@@ -9,7 +9,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import * as ethers from "ethers";
 import { connectProvider } from "../utils";
-import metamaskIcon from "../metamask.png";
 
 export interface JobStarHeaderProps {
     handleJobStarClick: () => void
