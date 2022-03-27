@@ -19,13 +19,14 @@ import Footer from "./_components/Footer";
 import { createTheme } from "@mui/material/styles";
 import { LoginPage } from "./LoginPage/loginPage";
 import { getNetworkConfig } from "./constants";
+import { LensProtocol } from "./Lens/lens";
 
 interface AppState {
-  achievements: Achievement[]
   currentPage: Page
   prevPage: Page
   signer?: ethers.ethers.providers.JsonRpcSigner,
   jobStar: ethers.Contract
+  lens: LensProtocol
 }
 
 enum PageType {
@@ -58,18 +59,14 @@ type Page = HomePage | ProfilePage | AchievementFormPage | AchievementConfirmati
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
-    const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const config = getNetworkConfig("localhost");
     this.state = {
-      achievements: [],
       prevPage: { type: PageType.Home },
       currentPage: { type: PageType.Home },
-      jobStar: new ethers.Contract(config.jobStar.address, config.jobStar.abi, provider)
+      jobStar: new ethers.Contract(config.jobStar.address, config.jobStar.abi, provider),
+      lens: new LensProtocol(new ethers.Contract(config.lensHub.address, config.jobStar.abi))
     };
-  }
-
-  async componentDidMount(): Promise<void> {
-    this.setState({ achievements: await getLatestAchievementsAll(this.state.jobStar, null) });
   }
 
   handleProfileClick(profile: Profile): void {
@@ -114,9 +111,9 @@ class App extends React.Component<{}, AppState> {
     switch (this.state.currentPage.type) {
       case PageType.Home:
         return <Home
+          jobStar={this.state.jobStar}
+          lens={this.state.lens}
           skills={["Javascript", "Solidity", "Marketing", "C#"]}
-          workerProfiles={[]}
-          achievements={this.state.achievements}
         ></Home>;
       case PageType.AchievementForm:
         return <AchievementForm
@@ -129,7 +126,7 @@ class App extends React.Component<{}, AppState> {
           handleBackButtonClick={() => this.goToPrevPage()}
           input={this.state.currentPage.input}></AchievementConfirmationForm>
       case PageType.Profile:
-        return <ProfilePageView profile={this.state.currentPage.profile}></ProfilePageView>
+        return <ProfilePageView jobStar={this.state.jobStar} profile={this.state.currentPage.profile}></ProfilePageView>
     }
   }
 

@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import JobStarAbi from "./abis/JobStar.json";
+import MockLensHubABI from "./abis/MockLensHub.json";
 
 // APP TEXT
 export const APP_TITLE = "Jobstar"
@@ -17,6 +18,7 @@ export const DRAWER_WIDTH = 250
 
 export interface NetworkConfig {
     jobStar: ContractConfig
+    lensHub: ContractConfig
 }
 
 export interface ContractConfig {
@@ -28,8 +30,12 @@ export function getNetworkConfig(networkName: string): NetworkConfig {
     if (networkName === "localhost") {
         return {
             jobStar: {
-                address: "0x8B04A41B64e6E38D4bE50f4d16Db841DabC7036d",
+                address: "0x1c7294fd3A24e9caCD64bB83e2504fd9273F718a",
                 abi: JobStarAbi
+            },
+            lensHub: {
+                address: "0xba66896B25280E3bD7C2cd3bEcAab95bBBA7B534",
+                abi: MockLensHubABI
             }
         }
     } else {

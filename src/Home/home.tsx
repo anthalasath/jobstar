@@ -1,27 +1,49 @@
 import { Grid, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { Achievement, LatestAchievementsView, getAchievementsCount } from "../Achievements/achievements";
+import { Achievement, getLatestAchievementsAll, LatestAchievementsView } from "../Achievements/achievements";
 import { toggleSkill, SkillList } from "../Skills/skills";
 import { Profile } from "../Profile/profile";
 import * as React from "react";
 import { DataGrid } from '@mui/x-data-grid';
+import { BigNumber, Contract } from "ethers";
+import { uniq } from "lodash";
+import { LensProfile, LensProtocol } from "../Lens/lens";
 
 export interface HomeProps {
-    workerProfiles: Profile[]
     skills: string[]
-    achievements: Achievement[],
+    jobStar: Contract
+    lens: LensProtocol
 }
 
 interface HomeState {
     selectedSkills: Set<string>
+    achievements: Achievement[]
+    workerProfiles: Profile[]
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
     constructor(props: HomeProps) {
         super(props);
         this.state = {
-            selectedSkills: new Set<string>()
+            achievements: [],
+            selectedSkills: new Set<string>(),
+            workerProfiles: []
         };
+    }
+
+    async componentDidMount(): Promise<void> {
+        const achievements = await getLatestAchievementsAll(this.props.jobStar, null);
+        const workerIds = uniq(await Promise.all(achievements.map(a => a.content.workerProfileId)));
+        const workerLensProfiles = await this.props.lens.getProfilesByIds(workerIds);
+        const workerProfiles: Profile[] = await Promise.all(workerLensProfiles.map(async p => {
+            const skills = await this.props.jobStar.getSkills(p.id);
+            return { id: p.id, handle: p.handle, imageURI: p.imageURI, skills: skills, socialMediaHandles: null };
+        }));
+
+        this.setState({
+            achievements,
+            workerProfiles
+        });
     }
 
     handleSkillClick(skill: string): void {
@@ -39,7 +61,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <Grid item xs={4}>
                 </Grid>
                 <Grid item xs={4}>
-                    <LatestAchievementsView achievements={this.props.achievements}></LatestAchievementsView>
+                    <LatestAchievementsView achievements={this.state.achievements}></LatestAchievementsView>
                 </Grid>
                 <Grid item xs={4}>
                 </Grid>
@@ -51,8 +73,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         skills={this.props.skills}
                         selectedSkills={this.state.selectedSkills}
                         handleClick={skill => this.handleSkillClick(skill)}></SkillList>
-                    <WorkerProfiles profiles={this.props.workerProfiles
-                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s.name)))}></WorkerProfiles>
+                    <WorkerProfiles profiles={this.state.workerProfiles
+                        .filter(p => this.state.selectedSkills.size === 0 || p.skills.some(s => this.state.selectedSkills.has(s)))}></WorkerProfiles>
                 </Grid>
                 <Grid item xs={4}>
                 </Grid>
@@ -60,7 +82,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
         </Box>
     }
 }
-
 
 interface WorkerProfilesProps {
     profiles: Profile[]
@@ -75,7 +96,7 @@ function WorkerProfiles(props: WorkerProfilesProps) {
         return {
             id: p.id,
             workers: p.handle,
-            achievements: getAchievementsCount(p)
+            achievements: 0 // TODO
         }
     });
     return <div style={{ height: 400, width: '100%' }}>

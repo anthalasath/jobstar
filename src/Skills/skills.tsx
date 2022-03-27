@@ -3,10 +3,6 @@ import { Achievement } from "../Achievements/achievements"
 import * as React from "react";
 import { Profile } from "../Profile/profile";
 
-export interface Skill {
-    name: string,
-}
-
 export interface SkillListProps {
     skills: string[],
     selectedSkills: Set<string>,

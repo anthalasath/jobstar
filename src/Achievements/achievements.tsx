@@ -31,16 +31,14 @@ export async function getLatestAchievementsAll(jobStar: ethers.Contract, skills:
     const filter = jobStar.filters.AchievementAccepted();
     const events = await jobStar.queryFilter(filter);
     const achievements: Achievement[] = await Promise.all(events.map(e => jobStar.getAchievementById(e.args!.achievementId)));
-    console.log(achievements);
     return achievements.filter(a => skills === null || skills.has(a.content.skill));
 }
 
-export async function getAchievementsCount(profileId: ethers.BigNumber): Promise<ethers.BigNumber> {
-    return ethers.BigNumber.from(0);
-}
-
-export async function getLatestAchievements(profile: ethers.BigNumber, skills: Set<string> | null): Promise<Achievement[]> {
-    return [];
+export async function getLatestAchievements(jobStar: ethers.Contract, profileId: ethers.BigNumber, skills: Set<string> | null): Promise<Achievement[]> {
+    const filter = jobStar.filters.AchievementAccepted(null, profileId);
+    const events = await jobStar.queryFilter(filter);
+    const achievements: Achievement[] = await Promise.all(events.map(e => jobStar.getAchievementById(e.args!.achievementId)));
+    return achievements.filter(a => skills === null || skills.has(a.content.skill));
 }
 
 function getSummary(achievement: Achievement): string {

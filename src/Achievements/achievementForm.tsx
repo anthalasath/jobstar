@@ -81,7 +81,7 @@ export class AchievementForm extends React.Component<AchievementFormProps, Achie
                                     description: this.state.description,
                                     skill: this.state.skill,
                                     title: this.state.title,
-                                    dateOfDelivery: new Date(),
+                                    dateOfDelivery: BigNumber.from(Date.now()),
                                     imageUri: null
                                 })}>Submit</Button>
                                 <Button variant="contained" color="inherit" onClick={() => this.props.handleCancelClick()}>Cancel</Button>

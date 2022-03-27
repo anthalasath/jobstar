@@ -1,10 +1,11 @@
 import { Avatar, Box, Button, Card, Grid, Paper, Stack } from "@mui/material";
-import { Skill, SkillList, toggleSkill } from "../Skills/skills";
+import { SkillList, toggleSkill } from "../Skills/skills";
 import * as React from "react";
-import { Achievement, AchievementList, getAchievementsCount, getLatestAchievements } from "../Achievements/achievements";
+import { Achievement, AchievementList, getLatestAchievements } from "../Achievements/achievements";
 import { khKH } from "@mui/material/locale";
 import { firstCharToUpper } from "../utils";
-import { BigNumber, BigNumberish } from "ethers";
+import { BigNumber, BigNumberish, Contract } from "ethers";
+import { LensProfile } from "../Lens/lens";
 
 export interface ProfileSummaryProps {
   profile: Profile
@@ -14,7 +15,7 @@ export interface ProfileSummaryProps {
 export function ProfileSummary(props: ProfileSummaryProps) {
   return <Stack>
     <Stack spacing={2} alignItems="center" direction="row">
-      <Avatar alt="avatar" src={props.profile.imageUri} sx={{ height: 75, width: 75 }}></Avatar>
+      <Avatar alt="avatar" src={props.profile.imageURI} sx={{ height: 75, width: 75 }}></Avatar>
       <h2>{props.profile.handle}</h2>
     </Stack>
     {props.profile.socialMediaHandles ? <SocialMediaHandlesView handles={props.profile.socialMediaHandles}></SocialMediaHandlesView> : null}
@@ -33,6 +34,7 @@ export function SocialMediaHandlesView(props: SocialMediaHandlesViewProps) {
 
 export interface ProfilePageProps {
   profile: Profile
+  jobStar: Contract
 }
 
 interface ProfilePageState {
@@ -52,7 +54,7 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
   }
 
   async componentDidMount(): Promise<void> {
-    const achievements = await getLatestAchievements(this.props.profile.id, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null);
+    const achievements = await getLatestAchievements(this.props.jobStar, this.props.profile.id, this.state.selectedSkills.size > 0 ? this.state.selectedSkills : null);
     this.setState({ achievements });
   }
 
@@ -71,10 +73,10 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
           <Stack spacing={5}>
             <ProfileSummary profile={this.props.profile}></ProfileSummary>
             <Button variant="outlined" sx={{ height: 50 }}>
-              <h3>{getAchievementsCount(this.props.profile.id)} achievements</h3>
+              <h3>{this.state.achievements.length} achievements</h3>
             </Button>
             <SkillList
-              skills={this.props.profile.skills.map(s => s.name)}
+              skills={this.props.profile.skills}
               selectedSkills={this.state.selectedSkills}
               handleClick={skill => this.handleSkillClick(skill)}></SkillList>
             <AchievementList achievements={this.state.achievements}></AchievementList>
@@ -87,11 +89,8 @@ export class ProfilePageView extends React.Component<ProfilePageProps, ProfilePa
   }
 }
 
-export interface Profile {
-  id: BigNumber,
-  handle: string,
-  imageUri: string,
-  skills: Skill[],
+export interface Profile extends LensProfile {
+  skills: string[],
   socialMediaHandles: SocialMediaHandles | null
 }
 

@@ -5,9 +5,9 @@ import * as ethers from "ethers";
 
 declare global {
     interface Window { ethereum: any; }
-  }
-  
-  window.ethereum = window.ethereum || {};
+}
+
+window.ethereum = window.ethereum || {};
 
 export function formatDate(date: BigNumber): string {
     return Intl.DateTimeFormat(navigator.language, { month: 'short', day: 'numeric', year: "numeric" }).format(new Date(date.toNumber()));
@@ -23,7 +23,7 @@ export interface ProfileIdWithRoleViewProps {
 }
 
 export function ProfileIdWithRoleView(props: ProfileIdWithRoleViewProps) {
-    return  <p><b>{props.role}: {props.profileId.toString()}</b></p>
+    return <p><b>{props.role}: {props.profileId.toString()}</b></p>
 }
 
 export interface ProfileWithRoleViewProps extends ProfileIdWithRoleViewProps {
