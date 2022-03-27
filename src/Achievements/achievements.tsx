@@ -122,9 +122,7 @@ export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.
 
 export function LatestAchievementsView(props: { achievements: Achievement[] }): JSX.Element {
     return <Stack>
-        <Grid container spacing={2}>
-            <Grid xs={12}><h2>Latest achievements</h2></Grid>
+            <h2>Latest achievements</h2>
             <AchievementSummaryList achievements={props.achievements}></AchievementSummaryList>
-        </Grid>
     </Stack>
 }
