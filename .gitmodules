@@ -1,0 +1,3 @@
+[submodule "jobstar-contracts"]
+	path = jobstar-contracts
+	url = git@github.com:anthalasath/jobstar-contracts.git
