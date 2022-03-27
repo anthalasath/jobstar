@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Achievement, AchievementInput, getLatestAchievementsAll } from "./Achievements/achievements";
+import { Achievement, AchievementContent, getLatestAchievementsAll } from "./Achievements/achievements";
 import { Home } from "./Home/home";
 import { Box, CssBaseline, List, ThemeProvider } from "@mui/material";
 import { JobStarHeader } from "./Header/header";
@@ -18,13 +18,14 @@ import Navbar from "./_components/Navbar";
 import Footer from "./_components/Footer";
 import { createTheme } from "@mui/material/styles";
 import { LoginPage } from "./LoginPage/loginPage";
-
+import { getNetworkConfig } from "./constants";
 
 interface AppState {
   achievements: Achievement[]
   currentPage: Page
   prevPage: Page
-  signer?: ethers.ethers.providers.JsonRpcSigner
+  signer?: ethers.ethers.providers.JsonRpcSigner,
+  jobStar: ethers.Contract
 }
 
 enum PageType {
@@ -45,7 +46,7 @@ type AchievementFormPage = {
 
 type AchievementConfirmationFormPage = {
   type: PageType.AchievementConfirmationForm,
-  input: AchievementInput
+  input: AchievementContent
 }
 
 type HomePage = {
@@ -57,22 +58,25 @@ type Page = HomePage | ProfilePage | AchievementFormPage | AchievementConfirmati
 class App extends React.Component<{}, AppState> {
   constructor(props) {
     super(props);
+    const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+    const config = getNetworkConfig("localhost");
     this.state = {
       achievements: [],
       prevPage: { type: PageType.Home },
-      currentPage: { type: PageType.Home }
+      currentPage: { type: PageType.Home },
+      jobStar: new ethers.Contract(config.jobStar.address, config.jobStar.abi, provider)
     };
   }
 
   async componentDidMount(): Promise<void> {
-    this.setState({ achievements: await getLatestAchievementsAll(null) });
+    this.setState({ achievements: await getLatestAchievementsAll(this.state.jobStar, null) });
   }
 
   handleProfileClick(profile: Profile): void {
     this.changePage({ type: PageType.Profile, profile: profile });
   }
 
-  handleAchievementFormSubmitClick(input: AchievementInput): void {
+  handleAchievementFormSubmitClick(input: AchievementContent): void {
     this.changePage({ type: PageType.AchievementConfirmationForm, input });
   }
 
@@ -161,7 +165,7 @@ class App extends React.Component<{}, AppState> {
           handleAddAchievementClick={() => this.handleAddAchievementClick()}
           handleProfileClick={profile => this.handleProfileClick(profile)}
         ></JobStarHeader>
-        {this.renderContentUnderHeader()} 
+        {this.renderContentUnderHeader()}
         <Footer />
       </Box>
     </ThemeProvider >)

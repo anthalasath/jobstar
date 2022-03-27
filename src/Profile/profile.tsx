@@ -102,6 +102,3 @@ export interface SocialMediaHandles {
   twitter: string | null
 }
 
-export async function getProfile(handle: string): Promise<Profile | undefined> {
-  return undefined;
-}

@@ -9,8 +9,8 @@ declare global {
   
   window.ethereum = window.ethereum || {};
 
-export function formatDate(date: Date): string {
-    return Intl.DateTimeFormat(navigator.language, { month: 'short', day: 'numeric', year: "numeric" }).format(date);
+export function formatDate(date: BigNumber): string {
+    return Intl.DateTimeFormat(navigator.language, { month: 'short', day: 'numeric', year: "numeric" }).format(new Date(date.toNumber()));
 }
 
 export function firstCharToUpper(s: string): string {

@@ -11,22 +11,28 @@ import * as ethers from "ethers";
 const placeholderAvatar = ""; // TODO FIX using image
 
 
-export interface AchievementInput {
-    skill: string,
-    title: string
-    description: string,
+export interface AchievementContent {
     issuerProfileId: ethers.BigNumber
     workerProfileId: ethers.BigNumber
-    dateOfDelivery: Date,
+    title: string
+    description: string
+    dateOfDelivery: ethers.BigNumber
     imageUri: string | null
+    skill: string
 }
 
-export interface Achievement extends AchievementInput {
-    id: string,
+export interface Achievement {
+    id: ethers.BigNumber
+    content: AchievementContent
+    isAccepted: boolean
 }
 
-export async function getLatestAchievementsAll(skills: Set<string> | null): Promise<Achievement[]> {
-    return [];
+export async function getLatestAchievementsAll(jobStar: ethers.Contract, skills: Set<string> | null): Promise<Achievement[]> {
+    const filter = jobStar.filters.AchievementAccepted();
+    const events = await jobStar.queryFilter(filter);
+    const achievements: Achievement[] = await Promise.all(events.map(e => jobStar.getAchievementById(e.args!.achievementId)));
+    console.log(achievements);
+    return achievements.filter(a => skills === null || skills.has(a.content.skill));
 }
 
 export async function getAchievementsCount(profileId: ethers.BigNumber): Promise<ethers.BigNumber> {
@@ -37,9 +43,8 @@ export async function getLatestAchievements(profile: ethers.BigNumber, skills: S
     return [];
 }
 
-
 function getSummary(achievement: Achievement): string {
-    return `${achievement.title} | ${formatDate(achievement.dateOfDelivery)} | ${achievement.skill}`;
+    return `${achievement.content.title} | ${formatDate(achievement.content.dateOfDelivery)} | ${achievement.content.skill}`;
 }
 
 export interface AchievementListProps {
@@ -54,8 +59,8 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
     const rows = props.achievements.map(a => {
         return {
             id: a.id,
-            achievements: a.description,
-            date: formatDate(a.dateOfDelivery)
+            achievements: a.content.description,
+            date: formatDate(a.content.dateOfDelivery)
         }
     });
     // TODO: https://github.com/mui/mui-x/issues/1040#issuecomment-780484281 for seeing full cell content
@@ -67,14 +72,17 @@ export function AchievementList(props: AchievementListProps): JSX.Element {
     </Stack>
 }
 
+interface AchievementInputViewProps {
+    achievement: AchievementContent
+}
+
 interface AchievementInputViewState {
     workerHandle: string
     issuerHandle: string
 }
 
-export class AchievementInputView extends React.Component<{ achievement: AchievementInput }, AchievementInputViewState> {
-
-    constructor(props) {
+export class AchievementInputView extends React.Component<AchievementInputViewProps, AchievementInputViewState> {
+    constructor(props: AchievementInputViewProps) {
         super(props);
         this.state = {
             workerHandle: "Unknown",
@@ -106,7 +114,7 @@ export class AchievementInputView extends React.Component<{ achievement: Achieve
 function AchievementSummaryView(props: { achievement: Achievement }): JSX.Element {
     return <ListItem alignItems="flex-start">
         <ListItemAvatar>
-            <Avatar alt="avatar" src={props.achievement.imageUri ? props.achievement.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
+            <Avatar alt="avatar" src={props.achievement.content.imageUri ? props.achievement.content.imageUri : placeholderAvatar} sx={{ height: 50, width: 50 }}></Avatar>
         </ListItemAvatar>
         <ListItemText primary={getSummary(props.achievement)}></ListItemText>
     </ListItem>
@@ -120,9 +128,9 @@ export function AchievementSummaryList(props: AchievementSummaryListProps): JSX.
     return <Paper style={{ maxHeight: 250, maxWidth: 600, overflow: "auto" }}>
         <List>
             {props.achievements
-                .sort(achievement => achievement.dateOfDelivery.getTime())
+                .sort(achievement => achievement.content.dateOfDelivery.toNumber())
                 .map(achievement => <>
-                    <AchievementSummaryView key={achievement.id} achievement={achievement}></AchievementSummaryView>
+                    <AchievementSummaryView key={achievement.id.toString()} achievement={achievement}></AchievementSummaryView>
                     <Divider />
                 </>)
             }

@@ -6,12 +6,6 @@ import { Profile } from "../Profile/profile";
 import * as React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 
-function Welcome() {
-    return <Box>
-        <h2>Welcome</h2>
-    </Box>
-}
-
 export interface HomeProps {
     workerProfiles: Profile[]
     skills: string[]

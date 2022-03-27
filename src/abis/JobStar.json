@@ -1,0 +1,452 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_profileNftContract",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "AchievementAlreadyAccepted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "InexistentAchievement",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      }
+    ],
+    "name": "NotOwnerOfProfile",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "issuerProfileId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "workerProfileId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "achievementId",
+        "type": "uint256"
+      }
+    ],
+    "name": "AchievementAccepted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "issuerProfileId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "workerProfileId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "achievementId",
+        "type": "uint256"
+      }
+    ],
+    "name": "AchievementProposed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "oldSkills",
+        "type": "string[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "newSkills",
+        "type": "string[]"
+      }
+    ],
+    "name": "SkillsUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "achievementId",
+        "type": "uint256"
+      }
+    ],
+    "name": "acceptAchievement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAchievementById",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "issuerProfileId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "workerProfileId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "dateOfDelivery",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "imageUri",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "skill",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct AchievementContent",
+            "name": "content",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "isAccepted",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Achievement",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "achievementId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAchievementIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "skill",
+        "type": "string"
+      }
+    ],
+    "name": "getAchievementsCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPendingAchievementsCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProfileNftAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getSkills",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "pendingAchievementsByProfileId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "profileSkills",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "profileSkillsAndAchievements",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "issuerProfileId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "workerProfileId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "dateOfDelivery",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUri",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "skill",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct AchievementContent",
+        "name": "content",
+        "type": "tuple"
+      }
+    ],
+    "name": "proposeAchievement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profileId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string[]",
+        "name": "skills",
+        "type": "string[]"
+      }
+    ],
+    "name": "updateSkills",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

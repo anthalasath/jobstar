@@ -1,11 +1,11 @@
 import { Button, Grid, Paper, Stack } from "@mui/material";
 import { BigNumber } from "ethers";
 import { ProfileIdWithRoleView } from "../utils";
-import { AchievementInput, AchievementInputView } from "./achievements";
+import { AchievementContent, AchievementInputView } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
 
 interface AchievementConfirmationFormProps {
-    input: AchievementInput
+    input: AchievementContent
     handleBackButtonClick: () => void
 }
 

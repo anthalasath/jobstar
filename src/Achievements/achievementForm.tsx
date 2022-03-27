@@ -3,11 +3,11 @@ import { Box } from "@mui/system";
 import { BigNumber } from "ethers";
 import * as React from "react";
 import { ProfileIdWithRoleView } from "../utils";
-import { AchievementInput } from "./achievements";
+import { AchievementContent } from "./achievements";
 import { AddAchievementHeader } from "./addAchievementHeader";
 
 export interface AchievementFormProps {
-    handleSubmitClick: (input: AchievementInput) => void
+    handleSubmitClick: (input: AchievementContent) => void
     handleCancelClick: () => void
     issuerProfileId: BigNumber
 }

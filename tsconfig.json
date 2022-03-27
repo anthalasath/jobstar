@@ -4,7 +4,9 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strict": true,
-    "jsx": "react"
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "./src/**/*.ts"
