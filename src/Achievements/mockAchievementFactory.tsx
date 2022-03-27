@@ -9,10 +9,10 @@ export class MockAchievementFactory {
             title: "C# Developer",
             description,
             skill: "C#",
-            dateOfDelivery: new Date(Date.parse("31 May 2022")),
+            dateOfDelivery: new Date(Date.parse("31 May 2020")),
             issuerProfileId: BigNumber.from(0),
             workerProfileId: BigNumber.from(0),
-            imageUri: "https://play-lh.googleusercontent.com/7WBLXw6FGMFqwmCaqU1KXLDl73oFJ6iVlQ5Dl_Wq3Mlfv95eCDwdS7kdB-5TDUuojVo=s360"
+            imageUri: "https://randomuser.me/api/portraits/men/78.jpg"
         });
     }
 
@@ -24,7 +24,7 @@ export class MockAchievementFactory {
             dateOfDelivery,
             issuerProfileId: BigNumber.from(0),
             workerProfileId: BigNumber.from(0),
-            imageUri: null
+            imageUri: "https://randomuser.me/api/portraits/women/9.jpg"
         });
     }
 
