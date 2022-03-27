@@ -104,7 +104,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   handleProviderConnected(signer: ethers.ethers.providers.JsonRpcSigner) {
-    this.setState({ signer: signer });
+    this.setState({ signer: signer, jobStar: this.state.jobStar.connect(signer), lens: new LensProtocol(this.state.lens.lensHub.connect(signer)) });
   }
 
   renderContentUnderHeader(): JSX.Element {

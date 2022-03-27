@@ -25,7 +25,7 @@ export class JobStarHeader extends React.Component<JobStarHeaderProps, {}> {
         if (this.props.signer) {
             if (this.props.connectedProfiles.length > 0) {
                 return <Button onClick={() => this.props.handleProfileClick(this.props.connectedProfiles[0])}>
-                    <Avatar alt="avatar" src={this.props.connectedProfiles[0].imageUri} sx={{ height: 50, width: 50 }}></Avatar>
+                    <Avatar alt="avatar" src={this.props.connectedProfiles[0].imageURI} sx={{ height: 50, width: 50 }}></Avatar>
                 </Button>
             } else {
                 return <Button onClick={() => {}}>

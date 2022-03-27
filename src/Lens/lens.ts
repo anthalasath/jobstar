@@ -21,7 +21,7 @@ export interface LensProfile {
 }
 
 export class LensProtocol {
-    private lensHub: Contract;
+    public lensHub: Contract;
 
     constructor(lensHub: Contract) {
         this.lensHub = lensHub;
